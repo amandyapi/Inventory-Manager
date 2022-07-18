@@ -114,50 +114,6 @@ const MENUITEMS = [
         ]
       }
     ],
-  },
-  {
-    label: 'Tables',
-    main: [
-      {
-        state: 'bootstrap-table',
-        short_label: 'B',
-        name: 'Bootstrap Table',
-        type: 'link',
-        icon: 'ti-receipt'
-      }
-    ]
-  },
-  {
-    label: 'Map And Extra Pages ',
-    main: [
-      {
-        state: 'authentication',
-        short_label: 'A',
-        name: 'Authentication',
-        type: 'sub',
-        icon: 'ti-id-badge',
-        children: [
-          {
-            state: 'login',
-            type: 'link',
-            name: 'Login',
-            target: true
-          }, {
-            state: 'registration',
-            type: 'link',
-            name: 'Registration',
-            target: true
-          }
-        ]
-      },
-      {
-        state: 'user',
-        short_label: 'U',
-        name: 'User Profile',
-        type: 'link',
-        icon: 'ti-user'
-      }
-    ]
   }
 ];
 
