@@ -45,6 +45,16 @@ const routes: Routes = [
         loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
       }
     ]
+  },
+  {
+    path: '',
+    component: AuthComponent,
+    children: [
+      {
+        path: 'auth',
+        loadChildren: () => import('./views/authentication/authentication.module').then(m => m.AuthenticationModule)
+      }
+    ]
   }
 ];
 
