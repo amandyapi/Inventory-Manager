@@ -1,7 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
 import { StorageService } from './storage.service';
 
 @Injectable({
@@ -23,6 +22,8 @@ export class SecurityService {
   user: any;
   prefix = 'security';
 
+  baseUrl = 'http://localhost:8000';
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -41,7 +42,7 @@ export class SecurityService {
       'Content-Type': 'application/json',
     });
 
-    return this.http.post<any>(environment.baseUrl + '/security/users/login', authForm,
+    return this.http.post<any>(this.baseUrl + '/security/users/login', authForm,
       { responseType: 'json', headers });
     }
     /** Login **/
@@ -54,7 +55,7 @@ export class SecurityService {
         'Content-Type': 'application/json'
       });
 
-      return this.http.post<string>(environment.baseUrl + '/security/users/forgotpassword', forgotForm,
+      return this.http.post<string>(this.baseUrl + '/security/users/forgotpassword', forgotForm,
         { responseType: 'json', headers });
 
     }
@@ -68,7 +69,7 @@ export class SecurityService {
         'Content-Type': 'application/json'
       });
 
-      return this.http.post<any>(environment.baseUrl + '/security/users/resetpassword', resetForm,
+      return this.http.post<any>(this.baseUrl + '/security/users/resetpassword', resetForm,
         { responseType: 'json', headers });
 
     }
@@ -84,7 +85,7 @@ export class SecurityService {
         Authorization: 'Bearer ' + this.token
       });
 
-      return this.http.get<any>(environment.baseUrl + '/security/users/' + userId,
+      return this.http.get<any>(this.baseUrl + '/security/users/' + userId,
         { responseType: 'json', headers });
     }
     /** Get User **/
@@ -101,7 +102,7 @@ export class SecurityService {
       const body = {
         securityStamp: userSecurityStamp,
       };
-      const response = await this.http.post<any>(environment.baseUrl + '/security/users/' + userId + '/token', body,
+      const response = await this.http.post<any>(this.baseUrl + '/security/users/' + userId + '/token', body,
         { responseType: 'json', headers })
         .toPromise();
       return response.toString();

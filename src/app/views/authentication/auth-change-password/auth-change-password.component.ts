@@ -12,4 +12,8 @@ export class AuthChangePasswordComponent implements OnInit {
   ngOnInit() {
   }
 
+  changePassword(){
+    
+  }
+
 }

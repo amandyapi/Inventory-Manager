@@ -9,7 +9,9 @@ import {NavigationEnd, Router} from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'Welcome ! Guru Able Angular 8+';
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    this.signinStatusCheck();
+  }
 
   ngOnInit() {
     this.router.events.subscribe((evt) => {
@@ -18,5 +20,13 @@ export class AppComponent implements OnInit {
       }
       window.scrollTo(0, 0);
     });
+  }
+
+  signinStatusCheck(){
+    this.redirectTo('/auth/signin');
+  }
+
+  redirectTo(page){
+    this.router.navigate([page]);
   }
 }

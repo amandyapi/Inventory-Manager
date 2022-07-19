@@ -9,10 +9,6 @@ const routes: Routes = [
     component: AdminComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full'
-      }, {
         path: 'dashboard',
         loadChildren: () => import('./pages/dashboard/dashboard-default/dashboard-default.module').then(m => m.DashboardDefaultModule)
       }, {
@@ -50,6 +46,11 @@ const routes: Routes = [
     path: '',
     component: AuthComponent,
     children: [
+      {
+        path: '',
+        redirectTo: 'auth/signin',
+        pathMatch: 'full'
+      },
       {
         path: 'auth',
         loadChildren: () => import('./views/authentication/authentication.module').then(m => m.AuthenticationModule)
