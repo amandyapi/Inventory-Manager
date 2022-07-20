@@ -1,7 +1,9 @@
+import { UserContext } from './../models/user-context.model';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { StorageService } from './storage.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -19,10 +21,12 @@ export class SecurityService {
   currentDate: any = '';
   isExpired: boolean;
 
-  user: any;
+  userContext: UserContext;
   prefix = 'security';
 
   baseUrl = 'http://localhost:8000';
+
+  userContextSubject = new Subject<UserContext>();
 
   constructor(
     private http: HttpClient,

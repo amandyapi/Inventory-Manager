@@ -7,7 +7,7 @@ import {NavigationEnd, Router} from '@angular/router';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title = 'Welcome ! Guru Able Angular 8+';
+  title = 'Inventory manager';
 
   constructor(private router: Router) {
     this.signinStatusCheck();
@@ -23,7 +23,7 @@ export class AppComponent implements OnInit {
   }
 
   signinStatusCheck(){
-    this.redirectTo('/auth/signin');
+    //this.redirectTo('/auth/signin');
   }
 
   redirectTo(page){

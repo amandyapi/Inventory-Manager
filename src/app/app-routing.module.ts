@@ -6,6 +6,11 @@ import {AuthComponent} from './layout/auth/auth.component';
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'auth/signin',
+    pathMatch: 'full'
+  },
+  {
+    path: '',
     component: AdminComponent,
     children: [
       {
@@ -33,28 +38,17 @@ const routes: Routes = [
       {
         path: 'dashboard-main',
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
-      }
-    ]
-  },
-  {
-    path: '',
-    component: AuthComponent,
-    children: [
-      {
-        path: 'authentication',
-        loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule)
-      }
-    ]
-  },
-  {
-    path: '',
-    component: AuthComponent,
-    children: [
-      {
-        path: '',
-        redirectTo: 'auth/signin',
-        pathMatch: 'full'
       },
+      {
+        path: 'stocks',
+        loadChildren: () => import('./views/stocks/stocks.module').then(m => m.StocksModule)
+      }
+    ]
+  },
+  {
+    path: '',
+    component: AuthComponent,
+    children: [
       {
         path: 'auth',
         loadChildren: () => import('./views/authentication/authentication.module').then(m => m.AuthenticationModule)

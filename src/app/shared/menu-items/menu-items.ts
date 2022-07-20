@@ -35,38 +35,35 @@ const MENUITEMS = [
     label: 'Dashboard',
     main: [
       {
-        state: 'dashboard',
+        state: 'dashboard-main',
         short_label: 'D',
         name: 'Tableau de bord',
         type: 'link',
         icon: 'ti-home'
       }
     ],
-  },{
+  },
+  {
     label: 'Stocks',
     main: [
       {
-        state: 'basic',
+        state: 'stocks',
         short_label: 'S',
         name: 'Stocks',
         type: 'sub',
         icon: 'ti-layout-grid2-alt',
         children: [
           {
-            state: 'simple-page',
+            state: 'product-list',
             name: 'Liste des Produits'
           },
           {
-            state: 'simple-page',
+            state: 'product-add',
             name: 'Enregistrement de produit'
           },
           {
-            state: 'simple-page',
+            state: 'category-list',
             name: 'Categories'
-          },
-          {
-            state: 'simple-page',
-            name: 'Approvisionnements'
           }
         ]
       }
