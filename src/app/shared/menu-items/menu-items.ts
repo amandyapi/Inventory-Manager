@@ -86,27 +86,10 @@ const MENUITEMS = [
           {
             state: 'simple-page',
             name: 'Nouvelle Commande'
-          }
-        ]
-      }
-    ],
-  },{
-    label: 'Payments',
-    main: [
-      {
-        state: 'basic',
-        short_label: 'P',
-        name: 'Transactions',
-        type: 'sub',
-        icon: 'ti-layout-grid2-alt',
-        children: [
-          {
-            state: 'simple-page',
-            name: 'Liste des Transactions'
           },
           {
             state: 'simple-page',
-            name: 'Nouvelle Commande'
+            name: 'Liste des Transactions'
           }
         ]
       }
