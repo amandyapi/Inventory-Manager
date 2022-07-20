@@ -29,6 +29,10 @@ const routes: Routes = [
       }, {
         path: 'simple-page',
         loadChildren: () => import('./pages/simple-page/simple-page.module').then(m => m.SimplePageModule)
+      },
+      {
+        path: 'dashboard-main',
+        loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       }
     ]
   },
