@@ -1,3 +1,4 @@
+import { UserContext } from './../../../common/models/user-context.model';
 import { SecurityService } from './../../../common/services/security.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -9,6 +10,8 @@ import { Router } from '@angular/router';
 })
 export class AuthSigninComponent implements OnInit {
 
+  UserContext: UserContext;
+
   constructor(
     private router: Router,
     private security: SecurityService
@@ -18,7 +21,7 @@ export class AuthSigninComponent implements OnInit {
   }
 
   login(){
-    this.redirectTo('/dashboard');
+    this.redirectTo('/dashboard-main');
   }
 
   redirectTo(page){
