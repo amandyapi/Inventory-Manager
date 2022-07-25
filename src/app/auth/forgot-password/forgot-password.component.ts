@@ -12,8 +12,12 @@ export class ForgotPasswordComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute) { }
 
 	// On SignIn link click
-	onSignIn() {
+	onSignin() {
 	  this.router.navigate(['sign-in'], { relativeTo: this.route.parent });
+	}
+  // On SignIn link click
+	onForgot() {
+	  this.router.navigate(['reset-password'], { relativeTo: this.route.parent });
 	}
 
 
