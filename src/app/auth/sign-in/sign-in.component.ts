@@ -20,6 +20,10 @@ export class SignInComponent implements OnInit {
     onSignup() {
       this.router.navigate(['sign-up'], { relativeTo: this.route.parent });
     }
+
+    onSignIn() {
+      this.router.navigate(['dashboard/sales'], { relativeTo: this.route.parent });
+    }
   
 
   ngOnInit(): void {
