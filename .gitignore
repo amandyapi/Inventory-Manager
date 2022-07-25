@@ -17,7 +17,11 @@
 *.launch
 .settings/
 *.sublime-workspace
-
+/.angular
+/android
+/plugins
+/resources
+/www
 # IDE - VSCode
 .vscode/*
 !.vscode/settings.json
