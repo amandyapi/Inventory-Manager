@@ -20,4 +20,8 @@ export class OrderService {
   getCart() {
     return this.cart;
   }
+
+  clearCart() {
+    this.cart = [];
+  }
 }
