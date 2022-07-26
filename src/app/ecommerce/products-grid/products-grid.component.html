@@ -1,16 +1,17 @@
 <!--breadcrumb-->
 <div class="page-breadcrumb d-none d-sm-flex align-items-center mb-3">
-	<div class="breadcrumb-title pe-3">eCommerce</div>
+	<div class="breadcrumb-title pe-3">Stocks</div>
 	<div class="ps-3">
 		<nav aria-label="breadcrumb">
 			<ol class="breadcrumb mb-0 p-0">
 				<li class="breadcrumb-item"><a href="javascript:;"><i class="bx bx-home-alt"></i></a>
 				</li>
-				<li class="breadcrumb-item active" aria-current="page">Products Grid</li>
+				<li class="breadcrumb-item active" aria-current="page">Liste des produits</li>
 			</ol>
 		</nav>
 	</div>
 	<div class="ms-auto">
+    <!--
 		<div class="btn-group">
 			<button type="button" class="btn btn-primary">Settings</button>
 			<button type="button" class="btn btn-primary split-bg-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown">	<span class="visually-hidden">Toggle Dropdown</span>
@@ -21,20 +22,23 @@
 				<div class="dropdown-divider"></div>	<a class="dropdown-item" href="javascript:;">Separated link</a>
 			</div>
 		</div>
+    -->
 	</div>
 </div>
 <!--end breadcrumb-->
 <div class="card">
 	<div class="card-body">
 		<div class="row align-items-center">
-			<div class="col-lg-3 col-xl-2">	<a href="javascript:;" class="btn btn-primary mb-3 mb-lg-0"><i class="bi bi-plus-square-fill"></i>Add Product</a>
+			<div class="col-lg-3 col-xl-2">
+          <a href="javascript:;" [routerLink]="['/ecommerce/add-new-product']" routerLinkActive="router-link-active"  class="btn btn-primary btn-sm mb-3 mb-lg-0">
+            <i class="bi bi-plus-square-fill"></i>&nbsp;Ajout de produit
+          </a>
 			</div>
 			<div class="col-lg-9 col-xl-10">
 				<form class="float-lg-end">
 					<div class="row row-cols-lg-auto g-2">
-						<div class="col-12">	<a href="javascript:;" class="btn btn-light mb-3 mb-lg-0"><i class="bi bi-download"></i>Export</a>
-						</div>
-						<div class="col-12">	<a href="javascript:;" class="btn btn-light mb-3 mb-lg-0"><i class="bi bi-upload"></i>Import</a>
+						<div class="col-12">
+              <a href="javascript:;" class="btn btn-light mb-3 mb-lg-0"><i class="bi bi-download"></i>Export</a>
 						</div>
 					</div>
 				</form>
@@ -49,23 +53,25 @@
 				<div class="ms-auto position-relative">
 					<div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-search"></i>
 					</div>
-					<input class="form-control ps-5" type="text" placeholder="search produts">
+					<input class="form-control ps-5" type="text" placeholder="Rechercher">
 				</div>
 			</div>
-			<div class="col-lg-2 col-6 col-md-3">
+			<div class="col-lg-3 col-6 col-md-3">
 				<select class="form-select">
-					<option>All category</option>
-					<option>Fashion</option>
-					<option>Electronics</option>
-					<option>Furniture</option>
-					<option>Sports</option>
+					<option>Toutes les catégories</option>
+					<option>Alimentation</option>
+					<option>Fournitures</option>
+					<option>Boisson</option>
+					<option>Mode</option>
+					<option>Soins</option>
+					<option>Electronique</option>
 				</select>
 			</div>
 			<div class="col-lg-2 col-6 col-md-3">
 				<select class="form-select">
-					<option>Latest added</option>
-					<option>Cheap first</option>
-					<option>Most viewed</option>
+					<option>Derniers ajoutés</option>
+					<option>Moins chers</option>
+					<option>Plus vus</option>
 				</select>
 			</div>
 		</div>
@@ -73,192 +79,28 @@
 	<div class="card-body">
 		<div class="product-grid">
 			<div class="row row-cols-1 row-cols-lg-4 row-cols-xl-4 row-cols-xxl-5 g-3">
-				<div class="col">
-					<a routerLink="/ecommerce/add-new-product-2"  class="card border shadow-none mb-0">
-						<div class="card-body text-center">
-							<img src="assets/images/products/01.png" class="img-fluid mb-3" alt="" />
-							<h6 class="product-title">Men White Polo T-shirt</h6>
-							<p class="product-price fs-5 mb-1"><span>$250.99</span>
-							</p>
-							<div class="rating mb-0"> <i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-							</div> <small>74 Reviews</small>
-							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3"> <a href="javascript:;" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-fill"></i> Edit</a>
-								<a href="javascript:;" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"></i> Delete</a>
+				<div class="col" *ngFor="let p of productList">
+					<a class="card border shadow-none mb-0">
+            <div class="card-header">
+              <div class="actions d-flex align-items-center justify-content-end gap-2 mt-3">
+								<a (click)="addToCurrentOrder()" href="javascript:;" class="btn btn-sm btn-success">
+                    <i class="bi bi-plus-square"></i>
+                </a>
 							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col">
-					<a routerLink="/ecommerce/add-new-product-2"  class="card border shadow-none mb-0">
+            </div>
 						<div class="card-body text-center">
-							<img src="assets/images/products/02.png" class="img-fluid mb-3" alt="" />
-							<h6 class="product-title">Men White Polo T-shirt</h6>
-							<p class="product-price fs-5 mb-1"><span>$250.99</span>
+							<img [src]="p.Image" class="img-fluid mb-3" alt="" />
+							<h6 class="product-title">{{p.Name}}</h6>
+							<p class="product-price text-muted fs-5 mb-1"><span>{{p.Price}} FCFA</span>
 							</p>
-							<div class="rating mb-0"> <i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-							</div> <small>65 Reviews</small>
-							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3"> <a href="javascript:;" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-fill"></i> Edit</a>
-								<a href="javascript:;" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"></i> Delete</a>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col">
-					<a routerLink="/ecommerce/add-new-product-2"  class="card border shadow-none mb-0">
-						<div class="card-body text-center">
-							<img src="assets/images/products/03.png" class="img-fluid mb-3" alt="" />
-							<h6 class="product-title">Men White Polo T-shirt</h6>
-							<p class="product-price fs-5 mb-1"><span>$250.99</span>
-							</p>
-							<div class="rating mb-0"> <i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-secondary"></i>
-								<i class="bi bi-star-fill text-secondary"></i>
-							</div> <small>96 Reviews</small>
-							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3"> <a href="javascript:;" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-fill"></i> Edit</a>
-								<a href="javascript:;" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"></i> Delete</a>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col">
-					<a routerLink="/ecommerce/add-new-product-2"  class="card border shadow-none mb-0">
-						<div class="card-body text-center">
-							<img src="assets/images/products/04.png" class="img-fluid mb-3" alt="" />
-							<h6 class="product-title">Men White Polo T-shirt</h6>
-							<p class="product-price fs-5 mb-1"><span>$250.99</span>
-							</p>
-							<div class="rating mb-0"> <i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-secondary"></i>
-							</div> <small>65 Reviews</small>
-							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3"> <a href="javascript:;" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-fill"></i> Edit</a>
-								<a href="javascript:;" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"></i> Delete</a>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col">
-					<a routerLink="/ecommerce/add-new-product-2"  class="card border shadow-none mb-0">
-						<div class="card-body text-center">
-							<img src="assets/images/products/05.png" class="img-fluid mb-3" alt="" />
-							<h6 class="product-title">Men White Polo T-shirt</h6>
-							<p class="product-price fs-5 mb-1"><span>$250.99</span>
-							</p>
-							<div class="rating mb-0"> <i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-secondary"></i>
-							</div> <small>35 Reviews</small>
-							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3"> <a href="javascript:;" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-fill"></i> Edit</a>
-								<a href="javascript:;" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"></i> Delete</a>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col">
-					<a routerLink="/ecommerce/add-new-product-2"  class="card border shadow-none mb-0">
-						<div class="card-body text-center">
-							<img src="assets/images/products/06.png" class="img-fluid mb-3" alt="" />
-							<h6 class="product-title">Men White Polo T-shirt</h6>
-							<p class="product-price fs-5 mb-1"><span>$250.99</span>
-							</p>
-							<div class="rating mb-0"> <i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-							</div> <small>74 Reviews</small>
-							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3"> <a href="javascript:;" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-fill"></i> Edit</a>
-								<a href="javascript:;" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"></i> Delete</a>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col">
-					<a routerLink="/ecommerce/add-new-product-2"  class="card border shadow-none mb-0">
-						<div class="card-body text-center">
-							<img src="assets/images/products/07.png" class="img-fluid mb-3" alt="" />
-							<h6 class="product-title">Men White Polo T-shirt</h6>
-							<p class="product-price fs-5 mb-1"><span>$250.99</span>
-							</p>
-							<div class="rating mb-0"> <i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-							</div> <small>42 Reviews</small>
-							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3"> <a href="javascript:;" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-fill"></i> Edit</a>
-								<a href="javascript:;" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"></i> Delete</a>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col">
-					<a routerLink="/ecommerce/add-new-product-2"  class="card border shadow-none mb-0">
-						<div class="card-body text-center">
-							<img src="assets/images/products/08.png" class="img-fluid mb-3" alt="" />
-							<h6 class="product-title">Men White Polo T-shirt</h6>
-							<p class="product-price fs-5 mb-1"><span>$250.99</span>
-							</p>
-							<div class="rating mb-0"> <i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-secondary"></i>
-								<i class="bi bi-star-fill text-secondary"></i>
-								<i class="bi bi-star-fill text-secondary"></i>
-							</div> <small>24 Reviews</small>
-							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3"> <a href="javascript:;" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-fill"></i> Edit</a>
-								<a href="javascript:;" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"></i> Delete</a>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col">
-					<a routerLink="/ecommerce/add-new-product-2"  class="card border shadow-none mb-0">
-						<div class="card-body text-center">
-							<img src="assets/images/products/09.png" class="img-fluid mb-3" alt="" />
-							<h6 class="product-title">Men White Polo T-shirt</h6>
-							<p class="product-price fs-5 mb-1"><span>$250.99</span>
-							</p>
-							<div class="rating mb-0"> <i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-secondary"></i>
-							</div> <small>55 Reviews</small>
-							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3"> <a href="javascript:;" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-fill"></i> Edit</a>
-								<a href="javascript:;" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"></i> Delete</a>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col">
-					<a routerLink="/ecommerce/add-new-product-2"  class="card border shadow-none mb-0">
-						<div class="card-body text-center">
-							<img src="assets/images/products/10.png" class="img-fluid mb-3" alt="" />
-							<h6 class="product-title">Men White Polo T-shirt</h6>
-							<p class="product-price fs-5 mb-1"><span>$250.99</span>
-							</p>
-							<div class="rating mb-0"> <i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-								<i class="bi bi-star-fill text-warning"></i>
-							</div> <small>74 Reviews</small>
-							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3"> <a href="javascript:;" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil-fill"></i> Edit</a>
-								<a href="javascript:;" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"></i> Delete</a>
+
+							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3">
+                <a href="javascript:;" class="btn btn-sm btn-outline-primary">
+                    <i class="bi bi-eye-fill"></i>
+                </a>
+								<a href="javascript:;" class="btn btn-sm btn-outline-info">
+                  <i class="bi bi-pencil-fill"></i>
+                </a>
 							</div>
 						</div>
 					</a>
@@ -268,15 +110,14 @@
 		</div>
 		<nav class="float-end mt-4" aria-label="Page navigation">
 			<ul class="pagination">
-				<li class="page-item disabled"><a class="page-link" href="#">Previous</a>
+				<li class="page-item disabled">
+          <a class="page-link" (click)="getProductsByPage(currentPage-1)">Précédent</a>
 				</li>
-				<li class="page-item active"><a class="page-link" href="#">1</a>
+				<li [ngClass]="(page.current)?'page-item active':'page-item'"
+            *ngFor="let page of pagesArray">
+          <a class="page-link" (click)="getProductsByPage(page.number)" >{{page.number}}</a>
 				</li>
-				<li class="page-item"><a class="page-link" href="#">2</a>
-				</li>
-				<li class="page-item"><a class="page-link" href="#">3</a>
-				</li>
-				<li class="page-item"><a class="page-link" href="#">Next</a>
+				<li class="page-item"><a class="page-link" (click)="getProductsByPage(currentPage+1)">Suivant</a>
 				</li>
 			</ul>
 		</nav>

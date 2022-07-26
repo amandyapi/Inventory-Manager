@@ -1,7 +1,7 @@
 $(function() {
 	"use strict";
 
-	
+
 // chart 1
 var options = {
     series: [{
@@ -171,9 +171,9 @@ var options = {
 
 
 // chart3
-  
+
   $('#chart3').easyPieChart({
-    
+
 	easing: 'easeOutBounce',
 	barColor : '#0259e6',
 	lineWidth: 7,
@@ -189,7 +189,7 @@ var options = {
 // chart4
 
   $('#chart4').easyPieChart({
-    
+
 	easing: 'easeOutBounce',
 	barColor : '#12bf24',
 	lineWidth: 7,
@@ -206,7 +206,7 @@ var options = {
 // chart5
 
 $('#chart5').easyPieChart({
-    
+
 	easing: 'easeOutBounce',
 	barColor : '#e72e7a',
 	lineWidth: 7,
@@ -303,9 +303,9 @@ var options = {
 
 
 
-  
+
    // world map
-	
+
 	jQuery('#geographic-map').vectorMap({
 		map: 'world_mill_en',
 		backgroundColor: 'transparent',
@@ -360,7 +360,10 @@ var options = {
 
     $(document).ready(function() {
         $('#Transaction-History').DataTable({
-           lengthMenu: [[6, 10, 20, -1], [6, 10, 20, 'Todos']]
+           lengthMenu: [[6, 10, 20, -1], [6, 10, 20]],
+           language: {
+            url: 'http://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json'
+          }
         });
      } );
 
