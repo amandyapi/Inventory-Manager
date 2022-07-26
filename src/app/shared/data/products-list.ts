@@ -8,7 +8,7 @@ export var productList =
       Image: 'assets/images/products/01.png',
       Description: '',
       Stock: 5,
-      Category: 'Mode'
+      Category: 'mode'
     },
     {
       Id: '2',
@@ -17,7 +17,7 @@ export var productList =
       Image: 'assets/images/products/02.png',
       Description: '',
       Stock: 20,
-      Category: 'Mode'
+      Category: 'mode'
     },
     {
       Id: '4',
@@ -26,7 +26,7 @@ export var productList =
       Image: 'assets/images/products/03.png',
       Description: '',
       Stock: 2,
-      Category: 'Mode'
+      Category: 'mode'
     },
     {
       Id: '5',
@@ -35,7 +35,7 @@ export var productList =
       Image: 'assets/images/products/04.png',
       Description: '',
       Stock: 4,
-      Category: 'Mode'
+      Category: 'mode'
     },
     {
       Id: '6',
@@ -44,7 +44,7 @@ export var productList =
       Image: 'assets/images/products/05.png',
       Description: '',
       Stock: 5,
-      Category: 'Mode'
+      Category: 'mode'
     },
     {
       Id: '7',
@@ -53,7 +53,7 @@ export var productList =
       Image: 'assets/images/products/06.png',
       Description: '',
       Stock: 2,
-      Category: 'Mode'
+      Category: 'decoration'
     },
     {
       Id: '8',
@@ -62,7 +62,7 @@ export var productList =
       Image: 'assets/images/products/07.png',
       Description: '',
       Stock: 3,
-      Category: 'Mode'
+      Category: 'mode'
     },
     {
       Id: '9',
@@ -71,7 +71,7 @@ export var productList =
       Image: 'assets/images/products/08.png',
       Description: '',
       Stock: 2,
-      Category: 'Mode'
+      Category: 'mode'
     },
     {
       Id: '10',
@@ -80,7 +80,7 @@ export var productList =
       Image: 'assets/images/products/09.png',
       Description: '',
       Stock: 1,
-      Category: 'Mode'
+      Category: 'mode'
     },
     {
       Id: '3',
@@ -89,7 +89,7 @@ export var productList =
       Image: 'assets/images/products/10.png',
       Description: '',
       Stock: 1,
-      Category: 'Electronique'
+      Category: 'electronique'
     }
   ],
   pageNumber: 1,

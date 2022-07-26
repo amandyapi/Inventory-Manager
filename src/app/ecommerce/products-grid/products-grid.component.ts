@@ -1,3 +1,4 @@
+import { categorieList } from './../../shared/data/categories-list';
 import { productList } from './../../shared/data/products-list';
 import { Component, OnInit } from '@angular/core';
 
@@ -16,6 +17,11 @@ export class ProductsGridComponent implements OnInit {
   totalItemsCount: number = productList.totalItemsCount;
   pagesArray: any[] = [];
 
+  _product: string;
+  _category: string;
+  categories: any[];
+  cart: any[];
+
   constructor() {
     this.currentPage = 1;
     let array = [1,2,3];
@@ -27,13 +33,15 @@ export class ProductsGridComponent implements OnInit {
     }
     console.log(this.pagesArray);
     this.setCurrentPage(this.currentPage);
+    this._category = "all";
+    this.categories = categorieList;
   }
 
   ngOnInit(): void {
 
   }
 
-  addToCurrentOrder(){
+  addToCurrentCart(){
     alert('produit ajouté au panier');
   }
 
@@ -44,7 +52,38 @@ export class ProductsGridComponent implements OnInit {
   }
 
   searchProduct(){
-    
+    let searchedProducts = this.productList.filter(item => item.Name.indexOf(this._product.toLowerCase()) != -1);
+    console.clear();
+    console.log('Searched items ', this._product, searchedProducts);
+
+    if(this._product == ''){
+      this.productList = productList.data;
+    }
+    else
+    {
+      this.productList = searchedProducts;
+    }
+  }
+
+  filterByCategory(){
+    let _searchedProductsByCategory;
+    let category = this._category;
+    if(category == 'all'){
+      this.productList = productList.data;
+    }
+    else
+    {
+      let rawProducts = productList.data;
+      _searchedProductsByCategory = rawProducts.filter(item => item.Category.indexOf(this._category.toLowerCase()) != -1);
+      console.log('_category',this._category.toLowerCase(),'_searchedProductsByCategory ', _searchedProductsByCategory);
+      this.productList = _searchedProductsByCategory;
+    }
+  }
+
+  setCategory(){
+    console.clear();
+    console.log('Selected category ', this._category);
+    this.filterByCategory();
   }
 
   getProductsByPage(pageNumber){

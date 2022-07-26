@@ -1,3 +1,4 @@
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
@@ -19,13 +20,17 @@ import { ColorSwitcherComponent } from './color-switcher/color-switcher.componen
         NavbarComponent,
         SidebarComponent,
         ColorSwitcherComponent,
-        NgbModule
+        NgbModule,
+        FormsModule,
+        ReactiveFormsModule
     ],
     imports: [
         RouterModule,
         CommonModule,
         NgbModule,
-        PerfectScrollbarModule
+        PerfectScrollbarModule,
+        FormsModule,
+        ReactiveFormsModule
     ],
     declarations: [
         FooterComponent,

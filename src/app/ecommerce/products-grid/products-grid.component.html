@@ -53,18 +53,13 @@
 				<div class="ms-auto position-relative">
 					<div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-search"></i>
 					</div>
-					<input class="form-control ps-5" type="text" placeholder="Rechercher">
+					<input [(ngModel)]="_product" name="searching" (keyup)="searchProduct()" class="form-control ps-5" type="text" placeholder="Rechercher">
 				</div>
 			</div>
 			<div class="col-lg-3 col-6 col-md-3">
-				<select class="form-select">
-					<option>Toutes les catégories</option>
-					<option>Alimentation</option>
-					<option>Fournitures</option>
-					<option>Boisson</option>
-					<option>Mode</option>
-					<option>Soins</option>
-					<option>Electronique</option>
+				<select [(ngModel)]="_category" (change)="setCategory()" class="form-select">
+					<option value="all" selected>Toutes les catégories</option>
+					<option *ngFor="let c of categories" value="{{c.name}}">{{c.name|titlecase}}</option>
 				</select>
 			</div>
 			<div class="col-lg-2 col-6 col-md-3">
@@ -83,7 +78,7 @@
 					<a class="card border shadow-none mb-0">
             <div class="card-header">
               <div class="actions d-flex align-items-center justify-content-end gap-2 mt-3">
-								<a (click)="addToCurrentOrder()" href="javascript:;" class="btn btn-sm btn-success">
+								<a (click)="addToCurrentCart()" href="javascript:;" class="btn btn-sm btn-success">
                     <i class="bi bi-plus-square"></i>
                 </a>
 							</div>

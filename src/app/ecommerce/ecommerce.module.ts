@@ -1,3 +1,4 @@
+import { SharedModule } from './../shared/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -24,6 +25,7 @@ import { TransationsComponent } from './transations/transations.component';
     TransationsComponent
   ],
   imports: [
+    SharedModule,
     CommonModule,
     EcommerceRoutingModule
   ]
