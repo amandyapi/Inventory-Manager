@@ -1,10 +1,10 @@
  <!--start top header-->
- <header class="top-header">        
+ <header class="top-header">
 	<nav class="navbar navbar-expand">
 	  <div (click)="toggleSidebar()" class="mobile-toggle-icon d-xl-none">
 		  <i class="bi bi-list"></i>
 		</div>
-		
+
 		<div class="search-toggle-icon d-xl-none ms-auto">
 		  <i class="bi bi-search"></i>
 		</div>
@@ -13,7 +13,7 @@
 			<input class="form-control" type="text" placeholder="Rechercher">
 			<div class="position-absolute top-50 translate-middle-y d-block d-xl-none search-close-icon"><i class="bi bi-x-lg"></i></div>
 		</form>
-		
+
 		<div class="top-navbar-right ms-3">
 		  <ul class="navbar-nav align-items-center">
 		  <li class="nav-item dropdown dropdown-large">
@@ -44,21 +44,21 @@
 					 </div>
 				   </a>
 				</li>
-				<!--
-				<li>
-				  <a class="dropdown-item" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling" href="#" (click)="$event.preventDefault()">
-					 <div class="d-flex align-items-center">
-					   <div class="setting-icon"><i class="bi bi-gear-fill"></i></div>
-					   <div class="setting-text ms-3"><span>Paramètres</span></div>
-					 </div>
-				   </a>
-				</li>
-				-->
+
 				<li>
 				  <a class="dropdown-item" routerLink='/dashboard/sales'>
 					 <div class="d-flex align-items-center">
 					   <div class="setting-icon"><i class="bi bi-speedometer"></i></div>
 					   <div class="setting-text ms-3"><span>Tableau de bord</span></div>
+					 </div>
+				   </a>
+				</li>
+
+				<li>
+				  <a class="dropdown-item" routerLink='/ecommerce/orders'>
+					 <div class="d-flex align-items-center">
+					   <div class="setting-icon"><i class="bi bi-bag-fill"></i></div>
+					   <div class="setting-text ms-3"><span>Commandes</span></div>
 					 </div>
 				   </a>
 				</li>

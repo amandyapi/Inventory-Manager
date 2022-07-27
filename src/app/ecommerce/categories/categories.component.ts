@@ -24,7 +24,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   loadCategories(){
-    this.categorieList = categorieList;
+    this.categorieList = this.stockService.getCategories();
     console.log('categorie List', this.categorieList);
   }
 

@@ -12,6 +12,7 @@ export class StockService {
 
   constructor() {
     this.categoryList = categorieList;
+    this.products = productList.data;
   }
 
   /** Category **/
@@ -34,9 +35,28 @@ export class StockService {
   /** Category **/
 
   /** Product **/
+  createProduct(product){
+    const Id = this.products.length+1;
+    this.products.push({
+      Id: Id,
+      Name: product.name,
+      Price: product.price,
+      Image: product.image,
+      Description: product.description,
+      Stock: product.stock,
+      Category: product.category
+    });
+    console.log('stock service this.products ', this.products);
+    return Id;
+  }
   getProducts(){
     this.products = productList.data;
     return this.products;
+  }
+
+  getProduct(productId){
+    const product = this.products.find(element => element.Id == productId);
+    return product;
   }
   /** Product **/
 }

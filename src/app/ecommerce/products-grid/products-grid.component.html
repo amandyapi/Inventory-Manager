@@ -30,7 +30,7 @@
 	<div class="card-body">
 		<div class="row align-items-center">
 			<div class="col-lg-3 col-xl-2">
-          <a href="javascript:;" [routerLink]="['/ecommerce/add-new-product']" routerLinkActive="router-link-active"  class="btn btn-primary btn-sm mb-3 mb-lg-0">
+          <a href="javascript:;" [routerLink]="['/ecommerce/add-new-product-2']" routerLinkActive="router-link-active"  class="btn btn-primary btn-sm mb-3 mb-lg-0">
             <i class="bi bi-plus-square-fill"></i>&nbsp;Ajout de produit
           </a>
 			</div>
@@ -78,19 +78,29 @@
 					<a class="card border shadow-none mb-0">
             <div class="card-header">
               <div class="actions d-flex align-items-center justify-content-end gap-2 mt-3">
-								<a (click)="addToCurrentCart(p)" href="javascript:;" class="btn btn-sm btn-success">
-                    <i class="bi bi-plus-square"></i>
+								<a (click)="addToCurrentCart(p)" href="javascript:;" class="">
+                    <!--<svg xmlns="http://www.w3.org/2000/svg"
+                    width="20" height="20"
+                    fill="currentColor" class="bi bi-plus-square-fill text-primary"
+                    viewBox="0 0 16 16">
+                      <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/>
+                    </svg>-->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag-plus-fill" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM8.5 8a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V12a.5.5 0 0 0 1 0v-1.5H10a.5.5 0 0 0 0-1H8.5V8z"/>
+                    </svg>
                 </a>
 							</div>
             </div>
 						<div class="card-body text-center">
-							<img [src]="p.Image" class="img-fluid mb-3" alt="" />
+							<img [src]="p.Image" class="img-fluid mb-3" alt=""/>
 							<h6 class="product-title">{{p.Name}}</h6>
 							<p class="product-price text-muted fs-5 mb-1"><span>{{p.Price}} FCFA</span>
 							</p>
 
 							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3">
-                <a href="javascript:;" class="btn btn-sm btn-outline-primary">
+                <a
+                    (click)="getProductDetails(p.Id)" (click)="open(content)"
+                    href="javascript:;" class="btn btn-sm btn-outline-primary">
                     <i class="bi bi-eye-fill"></i>
                 </a>
 								<a href="javascript:;" class="btn btn-sm btn-outline-info">
@@ -118,3 +128,62 @@
 		</nav>
 	</div>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Détails produit</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3 col-4">
+        <img [src]="currentProduct.Image" class="img-fluid mb-3" alt=""/>
+      </div>
+      <div class="mb-3">
+        <label for="dateOfBirth"></label>
+        <div class="input-group">
+        <input name="picture" class="form-control" type="file" (change)="fileChangeEvent($event)">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="dateOfBirth">Nom</label>
+        <div class="input-group">
+        <input id="nom" type="text" class="form-control" name="nom" [(ngModel)]="currentProduct.Name">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="dateOfBirth">Prix (FCFA)</label>
+        <div class="input-group">
+        <input id="prix" type="text" class="form-control" name="prix" [(ngModel)]="currentProduct.Price">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="dateOfBirth">Categorie</label>
+        <div class="input-group">
+        <select name="newProductCategory" [(ngModel)]="currentProduct.Category" class="form-select">
+					<option
+            *ngFor="let c of categories"
+            value="{{c.Id}}" [selected]="c.Id==currentProduct.Category.Id">
+            {{c.Name|titlecase}}
+          </option>
+				</select>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="dateOfBirth">Stock</label>
+        <div class="input-group">
+        <input id="stock" type="number" class="form-control" name="stock" [(ngModel)]="currentProduct.Stock">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="dateOfBirth">Description</label>
+        <div class="input-group">
+        <textarea name="description" [(ngModel)]="currentProduct.Description" class="form-control" placeholder="Description du produit" rows="5" cols="4"></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="editProduct()">Modifier</button>
+  </div>
+  </ng-template>

@@ -8,7 +8,11 @@ export var productList =
       Image: 'assets/images/products/01.png',
       Description: '',
       Stock: 5,
-      Category: 'mode'
+      Category: {
+        Id: "4",
+        Name: 'mode',
+        Description: 'commodi consequatur? Quis autem vel eum iure reprehenderit'
+      }
     },
     {
       Id: '2',
@@ -17,7 +21,11 @@ export var productList =
       Image: 'assets/images/products/02.png',
       Description: '',
       Stock: 20,
-      Category: 'mode'
+      Category: {
+        Id: "4",
+        Name: 'mode',
+        Description: 'commodi consequatur? Quis autem vel eum iure reprehenderit'
+      }
     },
     {
       Id: '3',
@@ -26,7 +34,11 @@ export var productList =
       Image: 'assets/images/products/03.png',
       Description: '',
       Stock: 2,
-      Category: 'mode'
+      Category: {
+        Id: "4",
+        Name: 'mode',
+        Description: 'commodi consequatur? Quis autem vel eum iure reprehenderit'
+      }
     },
     {
       Id: '4',
@@ -35,7 +47,11 @@ export var productList =
       Image: 'assets/images/products/04.png',
       Description: '',
       Stock: 4,
-      Category: 'mode'
+      Category: {
+        Id: "4",
+        Name: 'mode',
+        Description: 'commodi consequatur? Quis autem vel eum iure reprehenderit'
+      }
     },
     {
       Id: '5',
@@ -44,7 +60,11 @@ export var productList =
       Image: 'assets/images/products/05.png',
       Description: '',
       Stock: 5,
-      Category: 'mode'
+      Category: {
+        Id: "4",
+        Name: 'mode',
+        Description: 'commodi consequatur? Quis autem vel eum iure reprehenderit'
+      }
     },
     {
       Id: '6',
@@ -53,7 +73,11 @@ export var productList =
       Image: 'assets/images/products/06.png',
       Description: '',
       Stock: 2,
-      Category: 'decoration'
+      Category: {
+        Id: "7",
+        Name: 'decoration',
+        Description: 'Nam libero tempore, cum soluta nobis est eligendi'
+      }
     },
     {
       Id: '7',
@@ -62,7 +86,11 @@ export var productList =
       Image: 'assets/images/products/07.png',
       Description: '',
       Stock: 3,
-      Category: 'mode'
+      Category: {
+        Id: "4",
+        Name: 'mode',
+        Description: 'commodi consequatur? Quis autem vel eum iure reprehenderit'
+      }
     },
     {
       Id: '8',
@@ -71,7 +99,11 @@ export var productList =
       Image: 'assets/images/products/08.png',
       Description: '',
       Stock: 2,
-      Category: 'mode'
+      Category: {
+        Id: "4",
+        Name: 'mode',
+        Description: 'commodi consequatur? Quis autem vel eum iure reprehenderit'
+      }
     },
     {
       Id: '9',
@@ -80,16 +112,24 @@ export var productList =
       Image: 'assets/images/products/09.png',
       Description: '',
       Stock: 1,
-      Category: 'mode'
+      Category: {
+        Id: "4",
+        Name: 'mode',
+        Description: 'commodi consequatur? Quis autem vel eum iure reprehenderit'
+      }
     },
     {
       Id: '10',
-      Name: 'Casque audio bluetooth',
+      Name: 'Casque audio',
       Price: '75 000',
-      Image: 'assets/images/products/10.png',
+      Image: 'assets/images/products/10.jpg',
       Description: '',
       Stock: 1,
-      Category: 'electronique'
+      Category: {
+        Id: "6",
+        Name: 'electronique',
+        Description: 'Ut enim ad minima veniam, quis nostrum exercitationem'
+      }
     }
   ],
   pageNumber: 1,

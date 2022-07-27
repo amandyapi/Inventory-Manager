@@ -3,6 +3,7 @@ import { OrderService } from './../../shared/services/order.service';
 import { categorieList } from './../../shared/data/categories-list';
 import { productList } from './../../shared/data/products-list';
 import { Component, OnInit } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-products-grid',
@@ -20,13 +21,17 @@ export class ProductsGridComponent implements OnInit {
   pagesArray: any[] = [];
 
   _product: string;
+  currentProduct:any;
   _category: string;
   categories: any[];
   cart: any[];
 
+  closeResult = '';
+
   constructor(
     private orderService: OrderService,
-    private stockService: StockService
+    private stockService: StockService,
+    private modalService: NgbModal
   ) {
     this.currentPage = 1;
     for (let i = 0; i < this.totalPages; i++) {
@@ -45,6 +50,14 @@ export class ProductsGridComponent implements OnInit {
 
   }
 
+  open(content) {
+    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed`;
+    });
+  }
+
   addToCurrentCart(product){
     //alert('produit ajouté au panier');
     let cart = this.orderService.addToCart(product);
@@ -60,12 +73,13 @@ export class ProductsGridComponent implements OnInit {
   loadCategories(){
     this._category = "all";
     this.categories = categorieList;
+    console.log('this.categories', this.categories);
   }
 
   searchProduct(){
-    let searchedProducts = this.productList.filter(item => item.Name.indexOf(this._product.toLowerCase()) != -1);
-    console.clear();
-    console.log('Searched items ', this._product, searchedProducts);
+    let searchedProducts = this.productList.filter(item => item.Name.toLowerCase().indexOf(this._product.toLowerCase()) != -1);
+    //console.clear();
+    console.log('Searched items ', this._product, this._product.toLowerCase(), searchedProducts);
 
     if(this._product == ''){
       this.productList = productList.data;
@@ -85,7 +99,7 @@ export class ProductsGridComponent implements OnInit {
     else
     {
       let rawProducts = productList.data;
-      _searchedProductsByCategory = rawProducts.filter(item => item.Category.indexOf(this._category.toLowerCase()) != -1);
+      _searchedProductsByCategory = rawProducts.filter(item => item.Category.Name.indexOf(this._category.toLowerCase()) != -1);
       console.log('_category',this._category.toLowerCase(),'_searchedProductsByCategory ', _searchedProductsByCategory);
       this.productList = _searchedProductsByCategory;
     }
@@ -111,6 +125,16 @@ export class ProductsGridComponent implements OnInit {
 
   }
 
+  getProductDetails(productId){
+    this.currentProduct = this.stockService.getProduct(productId);
+    console.log('currentProduct', this.currentProduct);
+  }
+
+  editProduct(){
+    console.log('edit product');
+    this.modalService.dismissAll();
+  }
+
   setCurrentPage(currentPage){
     this.pagesArray.forEach(element => {
       if(element.number == currentPage){
@@ -132,6 +156,48 @@ export class ProductsGridComponent implements OnInit {
       result = false;
     }
     return result;
+  }
+
+  fileChangeEvent(fileInput: any) {
+    let imageError = null;
+    let cardImageBase64;
+    let isImageSaved;
+    let previewImagePath;
+
+    if (fileInput.target.files && fileInput.target.files[0]) {
+        // Size Filter Bytes
+        const max_size = 20971520;
+        const allowed_types = ['image/png', 'image/jpeg'];
+        const max_height = 15200;
+        const max_width = 25600;
+
+        const reader = new FileReader();
+        reader.onload = (e: any) => {
+            const image = new Image();
+            image.src = e.target.result;
+
+            image.onload = rs => {
+                const img_height = rs.currentTarget['height'];
+                const img_width = rs.currentTarget['width'];
+
+                if (img_height > max_height && img_width > max_width) {
+                    imageError = 'Maximum dimentions allowed ' + max_height + '*' + max_width + 'px';
+                    return false;
+                } else {
+                    const imgBase64Path = e.target.result;
+                    cardImageBase64 = imgBase64Path;
+                    //console.log('cardImageBase64 ', cardImageBase64);
+                    this.currentProduct.Image = cardImageBase64;
+                    isImageSaved = true;
+                    previewImagePath = imgBase64Path;
+                    return true;
+                }
+            };
+        };
+
+        reader.readAsDataURL(fileInput.target.files[0]);
+        console.log('current product ', this.currentProduct);
+    }
   }
 
 }
