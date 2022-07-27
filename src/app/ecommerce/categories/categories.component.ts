@@ -1,3 +1,5 @@
+import { StockService } from './../../shared/services/stock.service';
+import { categorieList } from './../../shared/data/categories-list';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,9 +9,39 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CategoriesComponent implements OnInit {
 
-  constructor() { }
+  categorieList: any[];
+  category: any = {
+    name: '',
+    description: ''
+  };
+
+  constructor(
+    private stockService: StockService
+  ) { }
 
   ngOnInit(): void {
+    this.loadCategories();
+  }
+
+  loadCategories(){
+    this.categorieList = categorieList;
+    console.log('categorie List', this.categorieList);
+  }
+
+  addCategory(){
+    console.log('new category', this.category);
+    this.stockService.createCategory(this.category);
+  }
+
+  getCategoryDetails(category){
+    this.category = category;
+  }
+
+  resetCategory(){
+    this.category = {
+      name: '',
+      description: ''
+    };
   }
 
 }

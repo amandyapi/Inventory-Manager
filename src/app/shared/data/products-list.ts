@@ -20,7 +20,7 @@ export var productList =
       Category: 'mode'
     },
     {
-      Id: '4',
+      Id: '3',
       Name: 'Jean Homme',
       Price: '5 000',
       Image: 'assets/images/products/03.png',
@@ -29,7 +29,7 @@ export var productList =
       Category: 'mode'
     },
     {
-      Id: '5',
+      Id: '4',
       Name: 'Pull vert',
       Price: '2 500',
       Image: 'assets/images/products/04.png',
@@ -38,7 +38,7 @@ export var productList =
       Category: 'mode'
     },
     {
-      Id: '6',
+      Id: '5',
       Name: 'Chaussure sport mixte',
       Price: '7 600',
       Image: 'assets/images/products/05.png',
@@ -47,7 +47,7 @@ export var productList =
       Category: 'mode'
     },
     {
-      Id: '7',
+      Id: '6',
       Name: 'Fauteuille',
       Price: '45 000',
       Image: 'assets/images/products/06.png',
@@ -56,7 +56,7 @@ export var productList =
       Category: 'decoration'
     },
     {
-      Id: '8',
+      Id: '7',
       Name: 'Montre',
       Price: '12 500',
       Image: 'assets/images/products/07.png',
@@ -65,7 +65,7 @@ export var productList =
       Category: 'mode'
     },
     {
-      Id: '9',
+      Id: '8',
       Name: 'Paire de talons bleu femme',
       Price: '15 000',
       Image: 'assets/images/products/08.png',
@@ -74,7 +74,7 @@ export var productList =
       Category: 'mode'
     },
     {
-      Id: '10',
+      Id: '9',
       Name: 'Chapeau noir homme',
       Price: '8 700',
       Image: 'assets/images/products/09.png',
@@ -83,7 +83,7 @@ export var productList =
       Category: 'mode'
     },
     {
-      Id: '3',
+      Id: '10',
       Name: 'Casque audio bluetooth',
       Price: '75 000',
       Image: 'assets/images/products/10.png',

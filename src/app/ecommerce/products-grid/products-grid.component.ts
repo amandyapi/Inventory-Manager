@@ -1,3 +1,5 @@
+import { StockService } from './../../shared/services/stock.service';
+import { OrderService } from './../../shared/services/order.service';
 import { categorieList } from './../../shared/data/categories-list';
 import { productList } from './../../shared/data/products-list';
 import { Component, OnInit } from '@angular/core';
@@ -8,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./products-grid.component.scss']
 })
 export class ProductsGridComponent implements OnInit {
-  productList: any[] = productList.data;
+  productList: any[];
 
   currentPage: number;
   previousPage: number;
@@ -22,9 +24,11 @@ export class ProductsGridComponent implements OnInit {
   categories: any[];
   cart: any[];
 
-  constructor() {
+  constructor(
+    private orderService: OrderService,
+    private stockService: StockService
+  ) {
     this.currentPage = 1;
-    let array = [1,2,3];
     for (let i = 0; i < this.totalPages; i++) {
       this.pagesArray.push({
         number: i+1,
@@ -33,22 +37,29 @@ export class ProductsGridComponent implements OnInit {
     }
     console.log(this.pagesArray);
     this.setCurrentPage(this.currentPage);
-    this._category = "all";
-    this.categories = categorieList;
+    this.loadProducts();
+    this.loadCategories();
   }
 
   ngOnInit(): void {
 
   }
 
-  addToCurrentCart(){
-    alert('produit ajouté au panier');
+  addToCurrentCart(product){
+    //alert('produit ajouté au panier');
+    let cart = this.orderService.addToCart(product);
+    console.log('new cart', cart);
   }
 
   loadProducts(){
-    this.productList = productList.data;
+    this.productList = this.stockService.getProducts();
     this.currentPage = 1;
     this.setCurrentPage(1);
+  }
+
+  loadCategories(){
+    this._category = "all";
+    this.categories = categorieList;
   }
 
   searchProduct(){
