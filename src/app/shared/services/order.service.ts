@@ -1,24 +1,23 @@
 import { Injectable } from '@angular/core';
+import { inArray } from 'highcharts';
+import { orders } from '../data/orders';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderService {
 
-  cart: any[] = [
-    {
-      Id: '',
-      Amount: 0,
-      Currency: '',
-      Status: 0,//awaiting payment = 0, finalized = 1
-      CreateTime: '',
-      UserId: '',
-      OrderLines: []
-    }
-  ]
+  cart: any = {
+    data: [],
+    pageNumber: 0,
+    totalPages: 0,
+    totalItemsCount: 0
+  }
+
+  currentOrder: any;
 
   constructor() {
-
+    this.cart = this.loadCart();
   }
 
   addToCart(product){
@@ -62,8 +61,31 @@ export class OrderService {
     this.cart = data;
   }
 
-  getCart() {
+  getCurrentOrder(){
+    return this.searchCurrentOrder();
+  }
+
+  getCart(p, i) {
+    let cart = [];
+    let data = this.loadCart();
+    for (let index = (p-1)*i; index < p*i; index++) {
+      if(data[index] !== undefined){
+        cart.push(data[index]);
+      }
+    }
+    let totalItemsCount = data.length;
+    let totalPages = Math.ceil(data.length/i);
+    this.cart = {
+      data: cart,
+      pageNumber: p,
+      totalPages: totalPages,
+      totalItemsCount: totalItemsCount
+    }
     return this.cart;
+  }
+
+  loadCart() {
+    return orders.data;
   }
 
   clearCart() {
@@ -71,7 +93,7 @@ export class OrderService {
   }
 
   searchCurrentOrder(){
-    const found = this.cart.find(element => element.Status == 0);
+    const found = this.cart.find(element => element.Status == 2);
     return found;
   }
   initCart(){
