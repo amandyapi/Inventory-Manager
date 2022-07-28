@@ -7,8 +7,13 @@ import { productList } from '../data/products-list';
 })
 export class StockService {
 
-  products: any[];
   categoryList: any[];
+  products: any = {
+    data: [],
+    pageNumber: 0,
+    totalPages: 0,
+    totalItemsCount: 0
+  }
 
   constructor() {
     this.categoryList = categorieList;
@@ -49,8 +54,23 @@ export class StockService {
     console.log('stock service this.products ', this.products);
     return Id;
   }
-  getProducts(){
+  getProducts(p=1, i=10){
     this.products = productList.data;
+    let products = [];
+    let data = this.products;
+    for (let index = (p-1)*i; index < p*i; index++) {
+      if(data[index] !== undefined){
+        products.push(data[index]);
+      }
+    }
+    let totalItemsCount = data.length;
+    let totalPages = Math.ceil(data.length/i);
+    this.products = {
+      data: products,
+      pageNumber: p,
+      totalPages: totalPages,
+      totalItemsCount: totalItemsCount
+    }
     return this.products;
   }
 

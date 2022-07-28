@@ -26,11 +26,15 @@ export class OrdersComponent implements OnInit {
     this.pageItemsCount = 10;
     this.getOrders(this.currentPage, this.pageItemsCount);
     this.loadPageArray();
+    this.setCurrentPage(this.currentPage);
   }
 
   getOrders(p, i){
+    this.currentPage = p;
+    console.log('currentPage', p, 'pageItemsCount', i);
     this.orders = this.orderService.getCart(p, i);
     console.log('orders ', this.orders);
+    this.setCurrentPage(p);
   }
 
   loadPageArray(){
@@ -40,6 +44,7 @@ export class OrdersComponent implements OnInit {
         current: false
       });
     }
+    console.log('pagesArray', this.pagesArray);
   }
 
   filterByStatus(term){
@@ -62,8 +67,16 @@ export class OrdersComponent implements OnInit {
     }
   }
 
-  setCurrentPage(page){
-
+  setCurrentPage(currentPage){
+    this.pagesArray.forEach(element => {
+      if(element.number == currentPage){
+        element.current = true;
+      }
+      else{
+        element.current = false;
+      }
+    });
+    console.log('new page array', this.currentPage);
   }
 
   isPageExist(page){

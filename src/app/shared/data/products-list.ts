@@ -122,9 +122,22 @@ export var productList =
       Id: '10',
       Name: 'Casque audio',
       Price: '75 000',
-      Image: 'assets/images/products/10.jpg',
+      Image: 'assets/images/products/10.png',
       Description: '',
       Stock: 1,
+      Category: {
+        Id: "6",
+        Name: 'electronique',
+        Description: 'Ut enim ad minima veniam, quis nostrum exercitationem'
+      }
+    },
+    {
+      Id: '11',
+      Name: 'Test product',
+      Price: '5 000',
+      Image: 'assets/images/products/10.jpg',
+      Description: '',
+      Stock: 10,
       Category: {
         Id: "6",
         Name: 'electronique',

@@ -11,13 +11,14 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./products-grid.component.scss']
 })
 export class ProductsGridComponent implements OnInit {
-  productList: any[];
+  productList: any;
 
   currentPage: number;
   previousPage: number;
   nextPage: number;
   totalPages: number = productList.totalPages;
   totalItemsCount: number = productList.totalItemsCount;
+  pageItemsCount: number;
   pagesArray: any[] = [];
 
   _product: string;
@@ -34,20 +35,28 @@ export class ProductsGridComponent implements OnInit {
     private modalService: NgbModal
   ) {
     this.currentPage = 1;
-    for (let i = 0; i < this.totalPages; i++) {
+    this.pageItemsCount = 5;
+
+    console.log(this.pagesArray);
+    this.getProductsByPage(this.currentPage, this.pageItemsCount);
+    this.loadCategories();
+
+    console.log('products', this.productList);
+    this.initPagesArray();
+    this.setCurrentPage(this.currentPage);
+  }
+
+  ngOnInit(): void {
+
+  }
+
+  initPagesArray(){
+    for (let i = 0; i < this.productList.totalPages; i++) {
       this.pagesArray.push({
         number: i+1,
         current: false
       });
     }
-    console.log(this.pagesArray);
-    this.setCurrentPage(this.currentPage);
-    this.loadProducts();
-    this.loadCategories();
-  }
-
-  ngOnInit(): void {
-
   }
 
   open(content) {
@@ -62,12 +71,6 @@ export class ProductsGridComponent implements OnInit {
     //alert('produit ajouté au panier');
     let cart = this.orderService.addToCart(product);
     console.log('new cart', cart);
-  }
-
-  loadProducts(){
-    this.productList = this.stockService.getProducts();
-    this.currentPage = 1;
-    this.setCurrentPage(1);
   }
 
   loadCategories(){
@@ -111,18 +114,19 @@ export class ProductsGridComponent implements OnInit {
     this.filterByCategory();
   }
 
-  getProductsByPage(pageNumber){
+  getProductsByPage(pageNumber, items){
     console.clear();
-    console.log('page array ', this.pagesArray);
+    console.log('pageNumber', pageNumber, 'items', items);
     if(this.isPageExist(pageNumber)){
       console.log('Looking for page ', pageNumber);
       this.currentPage = pageNumber;
       this.setCurrentPage(pageNumber);
+      this.productList = this.stockService.getProducts(pageNumber, items);
     }
     else{
       console.log('Looking for page ', pageNumber, ' but it does not exist');
     }
-
+    console.log('productList', this.productList);
   }
 
   getProductDetails(productId){
