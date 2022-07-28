@@ -16,6 +16,7 @@ export class OrdersComponent implements OnInit {
   pageItemsCount: number;
   totalItemsCount: number;
   pagesArray: any[] = [];
+  _status:any;
 
   constructor(
     private orderService: OrderService
@@ -24,6 +25,7 @@ export class OrdersComponent implements OnInit {
   ngOnInit(): void {
     this.currentPage = 1;
     this.pageItemsCount = 10;
+    this._status = -1;
     this.getOrders(this.currentPage, this.pageItemsCount);
     this.loadPageArray();
     this.setCurrentPage(this.currentPage);
@@ -32,7 +34,22 @@ export class OrdersComponent implements OnInit {
   getOrders(p, i){
     this.currentPage = p;
     console.log('currentPage', p, 'pageItemsCount', i);
-    this.orders = this.orderService.getCart(p, i);
+    this.orders = this.orderService.getCartByStatus(p, i, this._status);
+    console.log('orders ', this.orders);
+    this.setCurrentPage(p);
+  }
+
+  setStatus(){
+    console.log('status', this._status);
+    this.orders = this.orderService.getCartByStatus(1, 10, this._status);
+    console.log('this.orders', this.orders);
+    this.currentPage = 1;
+  }
+
+  getOrdersByStatus(p, i, status){
+    this.currentPage = p;
+    console.log('currentPage', p, 'pageItemsCount', i);
+    this.orders = this.orderService.getCartByStatus(p, i, status);
     console.log('orders ', this.orders);
     this.setCurrentPage(p);
   }
@@ -47,7 +64,7 @@ export class OrdersComponent implements OnInit {
     console.log('pagesArray', this.pagesArray);
   }
 
-  filterByStatus(term){
+  filterBy(term){
     switch (term) {
       case 'id':
 
@@ -88,6 +105,18 @@ export class OrdersComponent implements OnInit {
       result = false;
     }
     return result;
+  }
+
+  filterByStatus(){
+    let _searchedProductsByCategory;
+    let status = this._status;
+    if(status == 'all'){
+      this.getOrders(1, this.pageItemsCount);
+    }
+    else
+    {
+      let rawProducts = this.orderService.getCartByStatus(1, this.orders.totalItemsCount, status);
+    }
   }
 
 }

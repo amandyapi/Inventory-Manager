@@ -83,6 +83,30 @@ export class OrderService {
     }
     return this.cart;
   }
+  getCartByStatus(p, i, status){
+    let cart = [];
+    let data = this.loadCart();
+    for (let index = (p-1)*i; index < p*i; index++) {
+      if(data[index] !== undefined){
+        if(status == -1){
+          cart.push(data[index]);
+        }else if(status == 0 || status == 1 || status == 2){
+          if(data[index].Status == status){
+            cart.push(data[index]);
+          }
+        }
+      }
+    }
+    let totalItemsCount = data.length;
+    let totalPages = Math.ceil(data.length/i);
+    this.cart = {
+      data: cart,
+      pageNumber: p,
+      totalPages: totalPages,
+      totalItemsCount: totalItemsCount
+    }
+    return this.cart;
+  }
 
   loadCart() {
     return orders.data;

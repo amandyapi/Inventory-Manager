@@ -34,8 +34,8 @@
 						</select>-->
 					</div>
 					<div class="col-lg-2 col-6 col-md-3">
-						<select class="form-select">
-              <option value="all"></option>
+						<select [(ngModel)]="_status" (change)="setStatus()" name="status" class="form-select">
+              <option value="-1"></option>
 							<option value="0">Terminées</option>
 							<option value="1">Annulées</option>
 							<option value="2">En attente</option>
@@ -60,7 +60,9 @@
 								<td>{{o.Id}}</td>
 								<td>{{o.Amount}} {{o.Currency}}</td>
 								<td>
-                    <span class="badge rounded-pill alert-success">Received</span>
+                    <span *ngIf="o.Status == 0" class="badge rounded-pill alert-success">Terminée</span>
+                    <span *ngIf="o.Status == 1" class="badge rounded-pill alert-danger">Annulée</span>
+                    <span *ngIf="o.Status == 2" class="badge rounded-pill alert-info">En attente</span>
 								</td>
 								<td>{{o.Date}}</td>
 								<td>
@@ -108,10 +110,6 @@
 					<div class="col-12">
 						<label class="form-label">Identifiant</label>
 						<input type="text" class="form-control" placeholder="Order ID">
-					</div>
-					<div class="col-12">
-						<label class="form-label">Customer</label>
-						<input type="text" class="form-control" placeholder="Customer name">
 					</div>
 					<div class="col-12">
 						<label class="form-label">Statut</label>
