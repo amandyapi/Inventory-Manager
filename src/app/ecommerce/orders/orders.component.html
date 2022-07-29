@@ -23,17 +23,24 @@
 				<div class="row g-3">
 					<div class="col-lg-4 col-md-6 me-auto">
 						<div class="ms-auto position-relative">
-							<div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-search"></i>
-							</div>
-							<input class="form-control ps-5" type="text" placeholder="rechercher">
+							<!--
+                <div class="position-absolute top-50 translate-middle-y search-icon px-3"><i class="bi bi-search"></i>
+							  </div>
+							  <input class="form-control ps-5" type="text" placeholder="rechercher">
+              -->
 						</div>
 					</div>
-          <div class="col-lg-2 col-6 col-md-3">
-						<!--<select class="form-select">
-							<option>Show 10</option>
-						</select>-->
+          <div class="col-lg-3 col-6 col-md-3">
+            <label class="form-label text-center text-muted">Elements par pages</label>
+						<select [(ngModel)]="pageItemsCount" (change)="changePageItems()" class="form-select">
+							<option value="10"></option>
+							<option value="10">Voir 10</option>
+							<option value="20">Voir 20</option>
+							<option value="30">Voir 30</option>
+						</select>
 					</div>
 					<div class="col-lg-2 col-6 col-md-3">
+            <label class="form-label text-center text-muted">Statut</label>
 						<select [(ngModel)]="_status" (change)="setStatus()" name="status" class="form-select">
               <option value="-1"></option>
 							<option value="0">Terminées</option>
@@ -70,11 +77,9 @@
                     <a
                       href="javascript:;" class="text-primary" data-bs-toggle="tooltip"
                       data-bs-placement="bottom" title="" data-bs-original-title="View detail"
-                      aria-label="Views"><i class="bi bi-eye-fill"></i></a>
-										<a
-                      href="javascript:;" class="text-warning" data-bs-toggle="tooltip"
-                      data-bs-placement="bottom" title="" data-bs-original-title="Edit info"
-                      aria-label="Edit"><i class="bi bi-pencil-fill"></i></a>
+                      aria-label="Views" (click)="navigateToOrderDetails(o)">
+                       <i class="bi bi-eye-fill"></i>
+                    </a>
 									</div>
 								</td>
 							</tr>
@@ -86,14 +91,14 @@
         <nav class="float-end" aria-label="Page navigation">
 					<ul class="pagination">
             <li class="page-item">
-              <a class="page-link" (click)="getOrders(currentPage-1, pageItemsCount)">Précédent</a>
+              <a class="page-link" (click)="getOrdersByStatus(currentPage-1, pageItemsCount, _status)">Précédent</a>
             </li>
             <li [ngClass]="(page.current)?'page-item active':'page-item'"
                 *ngFor="let page of pagesArray">
-              <a class="page-link" (click)="getOrders(page.number, pageItemsCount)">{{page.number}}</a>
+              <a class="page-link" (click)="getOrdersByStatus(page.number, pageItemsCount, _status)">{{page.number}}</a>
             </li>
             <li class="page-item">
-              <a class="page-link" (click)="getOrders(currentPage+1, pageItemsCount)">Suivant</a>
+              <a class="page-link" (click)="getOrdersByStatus(currentPage+1, pageItemsCount, _status)">Suivant</a>
             </li>
           </ul>
 				</nav>

@@ -1,5 +1,7 @@
 import { OrderService } from './../../shared/services/order.service';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { StorageService } from './../../shared/services/storage.service';
 
 @Component({
   selector: 'app-orders',
@@ -19,7 +21,9 @@ export class OrdersComponent implements OnInit {
   _status:any;
 
   constructor(
-    private orderService: OrderService
+    private orderService: OrderService,
+    private storageService: StorageService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +56,21 @@ export class OrdersComponent implements OnInit {
     this.orders = this.orderService.getCartByStatus(p, i, status);
     console.log('orders ', this.orders);
     this.setCurrentPage(p);
+  }
+
+  navigateToOrderDetails(order){
+    this.storageService.setItem('orderDetails', order);
+    this.redirectTo('/ecommerce/orders-details');
+  }
+
+  changePageItems(){
+    console.log('this.pageItemsCount', this.pageItemsCount);
+    this.currentPage = 1;
+    this.getOrdersByStatus(this.currentPage, this.pageItemsCount, this._status);
+  }
+
+  redirectTo(page){
+    this.router.navigate([page]);
   }
 
   loadPageArray(){
