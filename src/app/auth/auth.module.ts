@@ -9,21 +9,23 @@ import { ResetPasswordComponent } from './reset-password/reset-password.componen
 import { LockScreenComponent } from './lock-screen/lock-screen.component';
 import { SigninWithHeaderFooterComponent } from './signin-with-header-footer/signin-with-header-footer.component';
 import { SignupWithHeaderFooterComponent } from './signup-with-header-footer/signup-with-header-footer.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 
 @NgModule({
   declarations: [
-    SignInComponent, 
+    SignInComponent,
     SignUpComponent,
-    ForgotPasswordComponent, 
-    ResetPasswordComponent, 
-    LockScreenComponent, 
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
+    LockScreenComponent,
     SigninWithHeaderFooterComponent,
     SignupWithHeaderFooterComponent],
   imports: [
     CommonModule,
-    AuthRoutingModule
+    AuthRoutingModule,
+    SharedModule
   ]
 })
 export class AuthModule { }

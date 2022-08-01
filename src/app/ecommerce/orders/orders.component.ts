@@ -19,6 +19,13 @@ export class OrdersComponent implements OnInit {
   totalItemsCount: number;
   pagesArray: any[] = [];
   _status:any;
+  filter: any = {
+    Id: null,
+    Status: null,
+    _Status: null,
+    Amount: null,
+    CreatedDate: null
+  };
 
   constructor(
     private orderService: OrderService,
@@ -74,13 +81,14 @@ export class OrdersComponent implements OnInit {
   }
 
   loadPageArray(){
+    this.pagesArray = [];
     for (let i = 0; i < this.orders.totalPages; i++) {
       this.pagesArray.push({
         number: i+1,
         current: false
       });
     }
-    console.log('pagesArray', this.pagesArray);
+    //console.log('pagesArray', this.pagesArray);
   }
 
   filterBy(term){
@@ -112,7 +120,7 @@ export class OrdersComponent implements OnInit {
         element.current = false;
       }
     });
-    console.log('new page array', this.currentPage);
+    //console.log('new page array', this.currentPage);
   }
 
   isPageExist(page){
@@ -136,6 +144,39 @@ export class OrdersComponent implements OnInit {
     {
       let rawProducts = this.orderService.getCartByStatus(1, this.orders.totalItemsCount, status);
     }
+  }
+
+  filterById(){}
+
+  filterByAmount(){}
+
+  filterByDate(){}
+
+  customFilter(p, i){
+    this.currentPage = p;
+    let orders = this.orderService.getCartByFilterOptions(p, i, this.filter);
+    this.orders = orders;
+    console.clear();
+    console.log('filter', p, i,this.filter);
+    console.log('this.orders', this.orders);
+    this.loadPageArray();
+    this.setCurrentPage(p);
+  }
+
+  resetFilter(){
+    this.filter = {
+      Id: null,
+      Status: null,
+      _Status: null,
+      Amount: null,
+      CreatedDate: null
+    }
+    this.currentPage = 1;
+    this.pageItemsCount = 10;
+
+    this.getOrders(this.currentPage, this.pageItemsCount);
+    this.loadPageArray();
+    this.setCurrentPage(this.currentPage);
   }
 
 }

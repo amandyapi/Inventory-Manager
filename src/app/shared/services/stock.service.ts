@@ -24,9 +24,9 @@ export class StockService {
   createCategory(category){
     const Id = this.categoryList.length+1;
     this.categoryList.push({
-      id: Id,
-      name: category.name,
-      description: category.description
+      Id: Id,
+      Name: category.Name,
+      Description: category.Description
     });
     return Id;
   }
@@ -35,7 +35,11 @@ export class StockService {
     return this.categoryList;
   }
 
-  getCategory(CategoryId){}
+  getCategory(CategoryId){
+    let category;
+    category = this.categoryList.find(element => element.Id == CategoryId);
+    return category;
+  }
 
   /** Category **/
 
@@ -75,8 +79,22 @@ export class StockService {
   }
 
   getProduct(productId){
-    const product = this.products.find(element => element.Id == productId);
+    //console.log('this.products', this.products);
+    let product;
+    product = this.products.data.find(element => element.Id == productId);
     return product;
+  }
+
+  updateProduct(productId, data){
+    this.products.data.forEach(elt => {
+      if(elt.Id == productId){
+        elt=data;
+      }
+    });
+    let product;
+    product = this.products.data.find(element => element.Id == productId);
+    console.log('product', product);
+    return true;
   }
   /** Product **/
 }

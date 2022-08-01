@@ -30,7 +30,7 @@
               -->
 						</div>
 					</div>
-          <div class="col-lg-3 col-6 col-md-3">
+          <!--<div class="col-lg-3 col-6 col-md-3">
             <label class="form-label text-center text-muted">Elements par pages</label>
 						<select [(ngModel)]="pageItemsCount" (change)="changePageItems()" class="form-select">
 							<option value="10"></option>
@@ -38,11 +38,11 @@
 							<option value="20">Voir 20</option>
 							<option value="30">Voir 30</option>
 						</select>
-					</div>
+					</div>-->
 					<div class="col-lg-2 col-6 col-md-3">
             <label class="form-label text-center text-muted">Statut</label>
-						<select [(ngModel)]="_status" (change)="setStatus()" name="status" class="form-select">
-              <option value="-1"></option>
+						<select [(ngModel)]="filter._Status" (change)="customFilter(1, 10)" name="status" class="form-select">
+              <option value="null"></option>
 							<option value="0">Terminées</option>
 							<option value="1">Annulées</option>
 							<option value="2">En attente</option>
@@ -91,14 +91,14 @@
         <nav class="float-end" aria-label="Page navigation">
 					<ul class="pagination">
             <li class="page-item">
-              <a class="page-link" (click)="getOrdersByStatus(currentPage-1, pageItemsCount, _status)">Précédent</a>
+              <a class="page-link" (click)="customFilter(currentPage-1, pageItemsCount)">Précédent</a>
             </li>
             <li [ngClass]="(page.current)?'page-item active':'page-item'"
                 *ngFor="let page of pagesArray">
-              <a class="page-link" (click)="getOrdersByStatus(page.number, pageItemsCount, _status)">{{page.number}}</a>
+              <a class="page-link" (click)="customFilter(page.number, pageItemsCount)">{{page.number}}</a>
             </li>
             <li class="page-item">
-              <a class="page-link" (click)="getOrdersByStatus(currentPage+1, pageItemsCount, _status)">Suivant</a>
+              <a class="page-link" (click)="customFilter(currentPage+1, pageItemsCount)">Suivant</a>
             </li>
           </ul>
 				</nav>
@@ -114,27 +114,28 @@
 				<form class="row g-3">
 					<div class="col-12">
 						<label class="form-label">Identifiant</label>
-						<input type="text" class="form-control" placeholder="Order ID">
+						<input type="text" [(ngModel)]="filter.Id" name="idFilter" class="form-control" placeholder="Order ID">
 					</div>
 					<div class="col-12">
 						<label class="form-label">Statut</label>
-						<select class="form-select">
-							<option>Terminées</option>
-							<option>Annulées</option>
-							<option>En attente</option>
+						<select class="form-select"  [(ngModel)]="filter.Status"  name="statusFilter">
+							<option value="0">Terminées</option>
+							<option value="1">Annulées</option>
+							<option value="2">En attente</option>
 						</select>
 					</div>
 					<div class="col-12">
 						<label class="form-label">Montant</label>
-						<input type="text" class="form-control">
+						<input type="text" [(ngModel)]="filter.Amount" class="form-control" name="amountFilter">
 					</div>
 					<div class="col-12">
 						<label class="form-label">Date</label>
-						<input type="date" class="form-control">
+						<input type="date" [(ngModel)]="filter.CreatedDate" class="form-control" name="dateFilter">
 					</div>
 					<div class="col-12">
-						<div class="d-grid">
-							<button class="btn btn-primary">Filter</button>
+						<div class="d-flex justify-content-arround">
+							<button (click)="customFilter(1, 10)" class="btn btn-primary col-6">Filter</button>
+              <button (click)="resetFilter()" class="btn btn-outline-danger col-6">Annuler</button>
 						</div>
 					</div>
 				</form>

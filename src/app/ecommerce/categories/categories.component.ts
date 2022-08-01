@@ -11,8 +11,8 @@ export class CategoriesComponent implements OnInit {
 
   categorieList: any[];
   category: any = {
-    name: '',
-    description: ''
+    Name: '',
+    Description: ''
   };
 
   constructor(
@@ -39,8 +39,8 @@ export class CategoriesComponent implements OnInit {
 
   resetCategory(){
     this.category = {
-      name: '',
-      description: ''
+      Name: '',
+      Description: ''
     };
   }
 

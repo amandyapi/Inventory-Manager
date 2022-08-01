@@ -158,12 +158,17 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="dateOfBirth">Categorie</label>
+        <label for="newProductCategory">Categorie</label>
         <div class="input-group">
-        <select name="newProductCategory" [(ngModel)]="currentProduct.Category" class="form-select">
+        <select name="newProductCategory"
+                class="form-select"
+                [(ngModel)]="currentProduct.Category.Id"
+                (change)="getProductDetailsCategory()">
+          <!--  -->
 					<option
+            [selected]="c.Id==currentProduct.Category.Id?true:false"
             *ngFor="let c of categories"
-            value="{{c.Id}}" [selected]="c.Id==currentProduct.Category.Id">
+            value="{{c.Id}}">
             {{c.Name|titlecase}}
           </option>
 				</select>

@@ -108,6 +108,82 @@ export class OrderService {
     return this.cart;
   }
 
+  getCartByFilterOptions(p, i, filter){
+    let cart = [];
+    let data = this.loadCart();
+    let searchId = [];
+    let searchStatus = [];
+    let _searchStatus = [];
+    let searchAmount = [];
+    let searchDate = [];
+    if(filter.Id != null){
+      searchId = data.filter(item => {
+       return item.Id == filter.Id;
+    });
+    cart = searchId;
+   }else{
+    cart = data;
+   }
+
+    if(filter.Status == "0" || filter.Status == "1" || filter.Status == "2"){
+      const _status = parseInt(filter.Status, 10);
+      console.log('_status', _status);
+      searchStatus = cart.filter(item => {
+        return item.Status == _status;
+       });
+     cart = searchStatus;
+     console.log('cart 0', searchStatus);
+    }else{
+      console.log('cart 1', searchStatus, cart);
+    }
+
+    if(filter._Status == "0" || filter._Status == "1" || filter._Status == "2"){
+      const _status = parseInt(filter._Status, 10);
+      console.log('_status', _status);
+      _searchStatus = cart.filter(item => {
+        return item.Status == _status;
+       });
+     cart = _searchStatus;
+     console.log('cart 0', _searchStatus);
+    }else{
+      console.log('cart 1', _searchStatus, cart);
+    }
+
+
+    if(filter.Amount != null){
+      searchAmount = cart.filter(item => {
+       return item.Amount == filter.Amount;
+    });
+    cart = searchAmount;
+   }
+    if(filter.CreatedDate != null){
+      searchDate = cart.filter(item => {
+       return item.Date == filter.CreatedDate;
+    });
+    cart = searchDate;
+
+   }
+
+   let temp = [];
+
+   for (let index = (p-1)*i; index < p*i; index++) {
+    if(cart[index] !== undefined){
+      temp.push(cart[index]);
+    }
+   }
+
+    let totalItemsCount = cart.length;
+    let totalPages = Math.ceil(cart.length/i);
+    this.cart = {
+      data: temp,
+      pageNumber: p,
+      totalPages: totalPages,
+      totalItemsCount: totalItemsCount
+    }
+    console.log('final cart', this.cart);
+    return this.cart;
+  }
+
   loadCart() {
     return orders.data;
   }
@@ -117,7 +193,9 @@ export class OrderService {
   }
 
   searchCurrentOrder(){
-    const found = this.cart.find(element => element.Status == 2);
+    let found = null;
+    found = this.cart.find(element => element.Status == 2);
+    console.log('found', found);
     return found;
   }
   initCart(){

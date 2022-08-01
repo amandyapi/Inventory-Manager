@@ -8,25 +8,39 @@ import { Router, ActivatedRoute } from "@angular/router";
   styleUrls: ['./sign-in.component.scss']
 })
 export class SignInComponent implements OnInit {
+    redirect: string = '';
+    user: any = {
+      Id: '',
+      FirstName: '',
+      Email: '',
+      PhoneNumber: '',
+      Username: '',
+      Password: '',
+      Role: 1,
+      Image: ''
+    }
 
-    constructor(private router: Router, private route: ActivatedRoute) { }
+    constructor(private router: Router, private route: ActivatedRoute) {
+       this.redirect = 'ecommerce/products-grid';
+    }
+
+     ngOnInit(): void {
+
+     }
 
     // On Forgotpassword link click
     onForgotpassword() {
-      this.router.navigate(['forgot-password'], { relativeTo: this.route.parent });
+      this.router.navigate(['forgot-password']);
     }
-  
+
     // On Signup link click
     onSignup() {
-      this.router.navigate(['sign-up'], { relativeTo: this.route.parent });
+      this.router.navigate(['sign-up']);
     }
 
     onSignIn() {
-      this.router.navigate(['dashboard/sales'], { relativeTo: this.route.parent });
+      console.log('User', this.user);
+      console.log('User', this.redirect);
+      this.router.navigate(['ecommerce/products-grid']);
     }
-  
-
-  ngOnInit(): void {
-  }
-
 }

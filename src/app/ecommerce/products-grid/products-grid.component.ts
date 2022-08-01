@@ -35,7 +35,7 @@ export class ProductsGridComponent implements OnInit {
     private modalService: NgbModal
   ) {
     this.currentPage = 1;
-    this.pageItemsCount = 5;
+    this.pageItemsCount = 7;
 
     console.log(this.pagesArray);
     this.getProductsByPage(this.currentPage, this.pageItemsCount);
@@ -130,12 +130,20 @@ export class ProductsGridComponent implements OnInit {
   }
 
   getProductDetails(productId){
+    console.clear();
     this.currentProduct = this.stockService.getProduct(productId);
     console.log('currentProduct', this.currentProduct);
   }
 
+  getProductDetailsCategory(){
+    let category = this.stockService.getCategory(this.currentProduct.Category.Id);
+    this.currentProduct.Category = category;
+    console.log('this.currentProduct.category', this.currentProduct.Category);
+  }
+
   editProduct(){
-    console.log('edit product');
+    console.log('edit product', this.currentProduct);
+    this.stockService.updateProduct(this.currentProduct.Id, this.currentProduct)
     this.modalService.dismissAll();
   }
 
