@@ -12,7 +12,7 @@ export class OrderService {
     pageNumber: 0,
     totalPages: 0,
     totalItemsCount: 0
-  }
+  };
 
   currentOrder: any;
 
@@ -189,12 +189,26 @@ export class OrderService {
   }
 
   clearCart() {
-    this.cart = [];
+    this.cart = {
+      data: [],
+      pageNumber: 0,
+      totalPages: 0,
+      totalItemsCount: 0
+    };
+  }
+
+  getOrder(OrderId){
+    let found = null;
+    found = this.cart.data.find(element => element.Id == OrderId);
+    console.log('found', found);
+    return found;
   }
 
   searchCurrentOrder(){
+    let cart = this.loadCart();
+    console.log('cart ', this.cart);
     let found = null;
-    found = this.cart.find(element => element.Status == 2);
+    found = cart.find(element => element.Status == 2);
     console.log('found', found);
     return found;
   }
