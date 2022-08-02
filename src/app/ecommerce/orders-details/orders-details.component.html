@@ -151,3 +151,38 @@
 		<!--end row-->
 	</div>
 </div>
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Détails produit</h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form>
+      <div class="mb-3 col-4">
+        <img [src]="currentProduct.Image" class="img-fluid mb-3" alt=""/>
+      </div>
+      <div class="mb-3">
+        <label for="dateOfBirth"></label>
+        <div class="input-group">
+        <input name="picture" class="form-control" type="file" (change)="fileChangeEvent($event)">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="dateOfBirth">Nom</label>
+        <div class="input-group">
+        <input id="nom" type="text" class="form-control" name="nom" [(ngModel)]="currentProduct.Name">
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="dateOfBirth">Prix (FCFA)</label>
+        <div class="input-group">
+        <input id="prix" type="text" class="form-control" name="prix" [(ngModel)]="currentProduct.Price">
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-dark" (click)="editProduct()">Modifier</button>
+  </div>
+  </ng-template>
