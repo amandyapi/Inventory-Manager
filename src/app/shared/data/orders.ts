@@ -69,7 +69,7 @@ export var orders =
       Id: "A5F0DEA8-C381-CF0A-E4C2-6D9C376C935A",
       Amount: 9271,
       Status: 2,
-      Date: "2021-12-31",
+      Date: "2022-08-01",
       Currency: "FCFA",
       OrderLines: []
     },

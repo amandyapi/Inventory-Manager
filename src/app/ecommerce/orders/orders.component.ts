@@ -49,12 +49,17 @@ export class OrdersComponent implements OnInit {
     this.setCurrentPage(this.currentPage);
   }
 
+  sortOrders(){
+    this.orders.data.sort((a, b) => (a.Date > b.Date) ? -1 : 1);
+  }
+
   getOrders(p, i){
     this.currentPage = p;
     console.log('currentPage', p, 'pageItemsCount', i);
     this.orders = this.orderService.getCartByStatus(p, i, this._status);
-    console.log('orders ', this.orders);
     this.setCurrentPage(p);
+    this.sortOrders();
+    console.log('orders ', this.orders);
   }
 
   setStatus(){

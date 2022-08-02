@@ -138,7 +138,47 @@ export class OrdersDetailsComponent implements OnInit {
 
   openBrowser() {}
 
-  findOperator() {}
+  findOperator() {
+    if(this.transaction.PhoneNumber !== '' && this.transaction.PhoneNumber !== null && this.transaction.PhoneNumber.length === 10){
+      let phone = this.transaction.PhoneNumber as string;
+      let prefix = phone.substr(0,2);
+      let choice = '';
+      //console.log('this.transaction.PhoneNumber', prefix);
+      switch (prefix) {
+        case '05':
+          console.log('MTN');
+          choice = 'MTN';
+          this.orange = this.operatorUrl + this.orangewhite;
+          this.mtn = this.operatorUrl + this.mtnRegular;
+          this.moov = this.operatorUrl + this.moovwhite;
+          break;
+        case '01':
+          console.log('MOOV');
+          choice = 'MOOV';
+          this.orange = this.operatorUrl + this.orangewhite;
+          this.mtn = this.operatorUrl + this.mtnwhite;
+          this.moov = this.operatorUrl + this.moovRegular;
+          break;
+        case '07':
+          console.log('ORANGE');
+          choice = 'ORANGE';
+          this.orange = this.operatorUrl + this.orangeRegular;
+          this.mtn = this.operatorUrl + this.mtnwhite;
+          this.moov = this.operatorUrl + this.moovwhite;
+          break;
+        case '77':
+          console.log('ORANGE');
+          choice = 'ORANGE';
+          this.orange = this.operatorUrl + this.orangeRegular;
+          this.mtn = this.operatorUrl + this.mtnwhite;
+          this.moov = this.operatorUrl + this.moovwhite;
+          break;
+        default:
+          break;
+      }
+      this.operator = choice;
+    }
+  }
 
   checkAmount() {
     let amountRegexp = new RegExp('[0-9]{1,}');

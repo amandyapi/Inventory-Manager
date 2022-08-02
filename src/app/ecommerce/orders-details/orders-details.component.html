@@ -156,13 +156,13 @@
       <div class="mb-3 row">
         <label for="dateOfBirth" class="col-lg-5">Montant</label>
         <div class="input-group col-lg-6">
-        <input id="nom" type="text" class="form-control" name="nom">
+        <input id="nom" [(ngModel)]="transaction.Amount" type="text" class="form-control" name="nom">
         </div>
       </div>
       <div class="mb-3 row">
         <label for="dateOfBirth">Numéro de téléphone</label>
         <div class="input-group">
-        <input id="prix" type="text" class="form-control" name="prix">
+        <input id="phone" [(ngModel)]="transaction.PhoneNumber" (keyup)="findOperator()" type="text" class="form-control" name="phone">
         </div>
       </div>
     </form>
