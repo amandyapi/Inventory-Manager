@@ -10,7 +10,7 @@ import { FooterComponent } from "./footer/footer.component";
 import { NavbarComponent } from "./navbar/navbar.component";
 import { SidebarComponent } from "./sidebar/sidebar.component";
 import { ColorSwitcherComponent } from './color-switcher/color-switcher.component';
-
+import { ToastrModule } from 'ngx-toastr';
 
 
 @NgModule({
@@ -22,7 +22,8 @@ import { ColorSwitcherComponent } from './color-switcher/color-switcher.componen
         ColorSwitcherComponent,
         NgbModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ToastrModule
     ],
     imports: [
         RouterModule,
@@ -30,7 +31,8 @@ import { ColorSwitcherComponent } from './color-switcher/color-switcher.componen
         NgbModule,
         PerfectScrollbarModule,
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        ToastrModule.forRoot()
     ],
     declarations: [
         FooterComponent,

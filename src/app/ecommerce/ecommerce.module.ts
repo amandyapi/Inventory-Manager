@@ -1,5 +1,5 @@
 import { SharedModule } from './../shared/shared.module';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { EcommerceRoutingModule } from './ecommerce-routing.module';
@@ -28,6 +28,10 @@ import { TransationsComponent } from './transations/transations.component';
     SharedModule,
     CommonModule,
     EcommerceRoutingModule
-  ]
+  ],
+  providers: [{
+    provide: LOCALE_ID,
+    useValue: 'fr'
+   }]
 })
 export class EcommerceModule { }

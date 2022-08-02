@@ -2,6 +2,8 @@ import { OrderService } from './../../shared/services/order.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { StorageService } from './../../shared/services/storage.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Component({
   selector: 'app-orders',
@@ -31,7 +33,12 @@ export class OrdersComponent implements OnInit {
     private orderService: OrderService,
     private storageService: StorageService,
     private router: Router,
-  ) { }
+    private toastr: ToastrService,
+    private ngxService: NgxUiLoaderService,
+  ) {
+    //this.ngxService.start();
+    //this.toastr.success('Hello world!', 'Toastr fun!');
+   }
 
   ngOnInit(): void {
     this.currentPage = 1;

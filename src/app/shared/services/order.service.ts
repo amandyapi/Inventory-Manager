@@ -1,3 +1,4 @@
+import { GeneralService } from './general.service';
 import { Injectable } from '@angular/core';
 import { inArray } from 'highcharts';
 import { orders } from '../data/orders';
@@ -16,7 +17,9 @@ export class OrderService {
 
   currentOrder: any;
 
-  constructor() {
+  constructor(
+    private generalService: GeneralService
+  ) {
     this.cart = this.loadCart();
   }
 
@@ -49,6 +52,7 @@ export class OrderService {
         });
       }
     }
+    console.log('this.cart', this.cart);
     this.cart.forEach(element => {
       if(element.Id == currentOrder.Id){
         element = currentOrder;
@@ -214,5 +218,14 @@ export class OrderService {
   }
   initCart(){
 
+  }
+
+  getOrderTotalAmount(order){
+    console.log('order', order);
+    let amount: number = 0;
+    order.OrderLines.forEach(elt => {
+      amount += this.generalService.convertStringToAmount(elt.Product.Price)*elt.Quantity;
+    });
+    return amount;
   }
 }
