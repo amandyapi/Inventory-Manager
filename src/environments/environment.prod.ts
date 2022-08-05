@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  baseUrl: 'https://sk-payment-bridge.azurewebsites.net'
 };
