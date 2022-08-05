@@ -20,11 +20,11 @@ export class OrderService {
   constructor(
     private generalService: GeneralService
   ) {
-    this.cart = this.loadCart();
+    this.cart.data = this.loadCart();
+    console.log('this.cart', this.cart);
   }
 
   addToCart(product){
-    console.clear();
     let found = false;
     let currentOrder = this.searchCurrentOrder();
 
@@ -52,8 +52,8 @@ export class OrderService {
         });
       }
     }
-    console.log('this.cart', this.cart);
-    this.cart.forEach(element => {
+
+    this.cart.data.forEach(element => {
       if(element.Id == currentOrder.Id){
         element = currentOrder;
       }
@@ -210,7 +210,7 @@ export class OrderService {
 
   searchCurrentOrder(){
     let cart = this.loadCart();
-    console.log('cart ', this.cart);
+    console.clear();
     let found = null;
     found = cart.find(element => element.Status == 2);
     console.log('found', found);
@@ -221,7 +221,7 @@ export class OrderService {
   }
 
   getOrderTotalAmount(order){
-    console.log('order', order);
+    console.log('order ', order);
     let amount: number = 0;
     order.OrderLines.forEach(elt => {
       amount += this.generalService.convertStringToAmount(elt.Product.Price)*elt.Quantity;

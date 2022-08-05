@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GeneralService } from './../../shared/services/general.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { SecurityService } from 'src/app/shared/services/security.service';
 @Component({
   selector: 'app-orders-details',
   templateUrl: './orders-details.component.html',
@@ -27,7 +28,7 @@ export class OrdersDetailsComponent implements OnInit {
 
   orangeRegular = 'OrangeMoney.png';
   mtnRegular = 'mtn-ci.png';
-  moovRegular = 'moovmoney.png';
+  moovRegular = 'moov-money.png';
 
   orangewhite = 'OrangeMoney-white.png';
   mtnwhite = 'mtn-ci-white.png';
@@ -110,6 +111,7 @@ export class OrdersDetailsComponent implements OnInit {
     private orderService: OrderService,
     private generalService: GeneralService,
     private storageService: StorageService,
+    private securityService: SecurityService,
     private router: Router,
     private modalService: NgbModal,
     private toastr: ToastrService,
@@ -136,7 +138,9 @@ export class OrdersDetailsComponent implements OnInit {
     console.log('transaction.Amount ', this.transaction.Amount);
   }
 
-  openBrowser() {}
+  openBrowser() {
+    console.log('browser !!!')
+  }
 
   findOperator() {
     if(this.transaction.PhoneNumber !== '' && this.transaction.PhoneNumber !== null && this.transaction.PhoneNumber.length === 10){
@@ -189,13 +193,31 @@ export class OrdersDetailsComponent implements OnInit {
     }
   }
 
-  login() {}
+  async login() {
+    this.ngxService.start();
+    (await this.securityService.getRegularToken())
+      .toPromise()
+      .then(async (res) => {
+        //this.ngxService.stop();
+        this.customToken = res;
+        console.clear();
+        console.log('customToken ', this.customToken);
+        this.securityService.setLocalToken(this.customToken);
+        this.initTransaction();
+      })
+      .catch((err) => {
+        this.ngxService.stop();
+        console.warn('An error occured', err);
+        this.toastr.error('Oops', 'Connexion impossible!!!');
+      });
+  }
 
   getToken() {}
 
   async initTransaction() {
     //this.ngxService.start();
-    //console.log('this.transaction', this.transaction);
+    console.log('this.transaction', this.transaction, this.order);
+    //return false;
     switch (this.operator) {
       case 'ORANGE':
         this.initOrangeTransaction();

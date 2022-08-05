@@ -47,6 +47,20 @@ export class SecurityService {
 
   /**** OAUTH  ****/
 
+  async getRegularToken() {
+    const credentials: any = {
+      usernameOrEmail: "ayapi@sk-automate.com",
+      password: "amandyapi"
+    };
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    });
+
+      return this.http.post<any>(environment.baseUrl + '/oauth/login', credentials,
+      { responseType: 'json', headers });;
+  }
+
   async getToken(_refreshToken) {
     const credentials: any = {
       refreshToken: _refreshToken
@@ -64,11 +78,11 @@ export class SecurityService {
       return response;
   }
 
-  async userLogin() {
+  async userLogin(body) {
     //console.log('Auth ss', authForm);
     const credentials: any = {
-      usernameOrEmail: 'ayapi@sk-automate.com',
-      password: 'amandyapi'
+      usernameOrEmail: body.Username,
+      password: body.Password
     };
     const headers = new HttpHeaders({
       Accept: 'application/json',
