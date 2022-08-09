@@ -58,7 +58,7 @@ export class SecurityService {
     });
 
       return this.http.post<any>(environment.baseUrl + '/oauth/login', credentials,
-      { responseType: 'json', headers });;
+      { responseType: 'json', headers });
   }
 
   async getToken(_refreshToken) {

@@ -1,6 +1,8 @@
 import { categorieList } from './../data/categories-list';
 import { Injectable } from '@angular/core';
 import { productList } from '../data/products-list';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +16,9 @@ export class StockService {
     totalPages: 0,
     totalItemsCount: 0
   }
+  token: any;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     this.categoryList = categorieList;
     this.products = productList.data;
   }
@@ -44,6 +47,20 @@ export class StockService {
   /** Category **/
 
   /** Product **/
+  loadProducts(){
+    const credentials: any = {
+      usernameOrEmail: "ayapi@sk-automate.com",
+      password: "amandyapi"
+    };
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    });
+
+      return this.http.get<any>(environment.baseUrl + '/products',
+      { responseType: 'json', headers });
+  }
+
   createProduct(product){
     const Id = this.products.length+1;
     this.products.push({

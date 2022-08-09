@@ -28,6 +28,8 @@ export class SignInComponent implements OnInit {
       Image: ''
     }
 
+    token: any = {};
+
     constructor(
       private router: Router,
       private orderService: OrderService,
@@ -69,9 +71,9 @@ export class SignInComponent implements OnInit {
         .then(async (res) => {
           this.toastr.success('Succes', 'Connexion réussie');
           this.ngxService.stop();
-          let User = res;
-          console.log('User ', User);
-          this.storageService.setItem('user', this.user);
+          this.token = res;
+          console.log('Token ', this.token);
+          this.storageService.setItem('token', this.token);
           this.router.navigate(['ecommerce/products-grid']);
         })
         .catch((err) => {
