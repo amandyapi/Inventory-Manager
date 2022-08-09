@@ -1,3 +1,4 @@
+import { SecurityService } from 'src/app/shared/services/security.service';
 import { categorieList } from './../data/categories-list';
 import { Injectable } from '@angular/core';
 import { productList } from '../data/products-list';
@@ -16,26 +17,50 @@ export class StockService {
     totalPages: 0,
     totalItemsCount: 0
   }
-  token: any;
+  token:any = {
+    tokenType: '',
+    accessToken: '',
+    accessTokenExpiresOn: '',
+    refreshToken: ''
+  };
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private securityService: SecurityService
+    ) {
     this.categoryList = categorieList;
     this.products = productList.data;
   }
 
   /** Category **/
-  createCategory(category){
-    const Id = this.categoryList.length+1;
-    this.categoryList.push({
-      Id: Id,
-      Name: category.Name,
-      Description: category.Description
+  async createCategory(category){
+    this.token = await this.securityService.customGetToken();
+    console.log('stock this.token ', this.token);
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token.accessToken
     });
-    return Id;
+
+      return this.http.post<any>(environment.baseUrl + '/product-categories/', category,
+      { responseType: 'json', headers });
   }
 
   getCategories(){
     return this.categoryList;
+  }
+
+  async loadCategories(){
+    this.token = await this.securityService.customGetToken();
+    console.log('stock this.token ', this.token);
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token.accessToken
+    });
+
+      return this.http.get<any>(environment.baseUrl + '/product-categories',
+      { responseType: 'json', headers });
   }
 
   getCategory(CategoryId){
@@ -47,34 +72,32 @@ export class StockService {
   /** Category **/
 
   /** Product **/
-  loadProducts(){
-    const credentials: any = {
-      usernameOrEmail: "ayapi@sk-automate.com",
-      password: "amandyapi"
-    };
+  async loadProducts(){
+    this.token = await this.securityService.customGetToken();
+
     const headers = new HttpHeaders({
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token.accessToken
     });
 
       return this.http.get<any>(environment.baseUrl + '/products',
       { responseType: 'json', headers });
   }
 
-  createProduct(product){
-    const Id = this.products.length+1;
-    this.products.push({
-      Id: Id,
-      Name: product.name,
-      Price: product.price,
-      Image: product.image,
-      Description: product.description,
-      Stock: product.stock,
-      Category: product.category
+  async createProduct(data){
+    this.token = await this.securityService.customGetToken();
+    console.log('stock this.token ', this.token);
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token.accessToken
     });
-    console.log('stock service this.products ', this.products);
-    return Id;
+
+      return this.http.post<any>(environment.baseUrl + '/products/', data,
+      { responseType: 'json', headers });
   }
+
   getProducts(p=1, i=10){
     this.products = productList.data;
     let products = [];
@@ -102,16 +125,31 @@ export class StockService {
     return product;
   }
 
-  updateProduct(productId, data){
-    this.products.data.forEach(elt => {
-      if(elt.Id == productId){
-        elt=data;
-      }
+  async getProductImage(productId){
+    this.token = await this.securityService.customGetToken();
+
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token.accessToken
     });
-    let product;
-    product = this.products.data.find(element => element.Id == productId);
-    console.log('product', product);
-    return true;
+
+      return this.http.get<any>(environment.baseUrl + '/products/'+productId+'/image',
+      { responseType: 'json', headers });
+  }
+
+  async updateProduct(productId, data){
+    this.token = await this.securityService.customGetToken();
+    console.log('stock this.token ', this.token);
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token.accessToken
+    });
+
+      return this.http.put<any>(environment.baseUrl + '/products/'+productId, data,
+      { responseType: 'json', headers });
   }
   /** Product **/
+
 }

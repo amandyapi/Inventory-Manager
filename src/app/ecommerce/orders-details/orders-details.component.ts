@@ -195,7 +195,7 @@ export class OrdersDetailsComponent implements OnInit {
 
   async login() {
     this.ngxService.start();
-    (await this.securityService.getRegularToken())
+    (await this.securityService.customGetToken())
       .toPromise()
       .then(async (res) => {
         //this.ngxService.stop();

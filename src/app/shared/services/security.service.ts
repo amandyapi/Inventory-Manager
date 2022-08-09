@@ -1,3 +1,4 @@
+import { StorageService } from './storage.service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
@@ -7,7 +8,6 @@ import { environment } from 'src/environments/environment';
 })
 export class SecurityService {
 
-  token: string;
   delay: number;
   duration: number;
   isExpired: boolean;
@@ -19,47 +19,37 @@ export class SecurityService {
   };
   userContext: any;
 
-  myToken = {
+  token:any = {
     tokenType: '',
     accessToken: '',
     accessTokenExpiresOn: '',
     refreshToken: ''
   };
 
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private storageService: StorageService
+    ) {
     this.duration = 0;
     this.delay = 900;//900
     this.isExpired = false;
    }
 
    cleanLocalToken(){
-    localStorage.setItem('customToken', JSON.stringify(this.myToken));
+    localStorage.setItem('token', JSON.stringify(this.token));
   }
 
-  setLocalToken(customToken){
-    localStorage.setItem('customToken', JSON.stringify(customToken));
+  setLocalToken(token){
+    localStorage.setItem('token', JSON.stringify(token));
   }
 
   getLocalToken(){
-    const myToken = JSON.parse(localStorage.getItem('customToken'));
+    const myToken = JSON.parse(localStorage.getItem('token'));
+    //console.log('myToken', myToken);
     return myToken;
   }
 
   /**** OAUTH  ****/
-
-  async getRegularToken() {
-    const credentials: any = {
-      usernameOrEmail: "ayapi@sk-automate.com",
-      password: "amandyapi"
-    };
-    const headers = new HttpHeaders({
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    });
-
-      return this.http.post<any>(environment.baseUrl + '/oauth/login', credentials,
-      { responseType: 'json', headers });
-  }
 
   async getToken(_refreshToken) {
     const credentials: any = {
@@ -68,6 +58,7 @@ export class SecurityService {
     const headers = new HttpHeaders({
       Accept: 'application/json',
       'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token.accessToken
     });
 
 
@@ -95,38 +86,42 @@ export class SecurityService {
 
   /**** OAUTH  ****/
 
-  async customGetToken(_refreshToken) {
-    this.customToken = JSON.parse(localStorage.getItem('token'));
-    console.log('customGetToken', this.customToken);
+  async customGetToken() {
+    this.token = this.getLocalToken();
+    //console.log('custom Token', this.token);
     if (this.isLocalTokenExpired()) {
       console.log('token Is Expired');
       try {
-        this.customToken.value = await this.getToken(_refreshToken);
-        this.customToken.timestamp = Date.now();
-        this.duration = 0;
+        this.token = await this.getToken(this.token.refreshToken);
+
         this.isExpired = false;
-        localStorage.setItem('token', JSON.stringify(this.customToken));
-        console.log('this.customToken new', this.customToken);
-        console.log('customToken 001', this.customToken);
+        this.storageService.setItem('token', this.token);
+        console.log('token refreshed new', this.token);
+        return this.token;
       } catch (error) {
         //this.router.navigate(['/auth/signin'], {});//Customed
         console.log('A Token error occured', error);
+        return false;
       }
     } else {
-      this.customToken = JSON.parse(sessionStorage.getItem('token'));
-      console.log('token Is valid', this.customToken);
+      this.token = this.getLocalToken();
+      console.log('token Is valid', this.token);
+      return this.token;
     }
-    return this.customToken.value;
+    //return this.token;
   }
 
   isLocalTokenExpired() {
     const tokenRegexp = new RegExp('[a-b0-9]+');
+    this.token = this.getLocalToken();
     /*this.customToken = JSON.parse(localStorage.getItem('token'));
-    console.log('customToken 002', this.customToken);*/
+    */
     this.currentDate = Date.now();
-    this.duration = Math.floor(this.currentDate / 1000) - Math.floor(this.customToken.timestamp / 1000);
+    let _timestamp: number =  new Date(this.token.accessTokenExpiresOn).getTime()
+    console.log('customToken 002', this.token.accessTokenExpiresOn, _timestamp);
+    this.duration = Math.floor(this.currentDate / 1000) - Math.floor(_timestamp / 1000);
 
-    if (!tokenRegexp.test(this.customToken.value)) {
+    if (!tokenRegexp.test(this.token.accessTokenExpiresOn)) {
       this.isExpired = true;
     } else {
       if (this.duration > this.delay) {

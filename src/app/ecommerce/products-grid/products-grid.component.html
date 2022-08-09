@@ -74,17 +74,11 @@
 	<div class="card-body">
 		<div class="product-grid">
 			<div class="row row-cols-1 row-cols-lg-4 row-cols-xl-4 row-cols-xxl-5 g-3">
-				<div class="col" *ngFor="let p of productList.data">
+				<div class="col" *ngFor="let p of productList">
 					<a class="card border shadow-none mb-0">
             <div class="card-header">
               <div class="actions d-flex align-items-center justify-content-end gap-2 mt-3">
 								<a (click)="addToCurrentCart(p)" href="javascript:;" class="">
-                    <!--<svg xmlns="http://www.w3.org/2000/svg"
-                    width="20" height="20"
-                    fill="currentColor" class="bi bi-plus-square-fill text-primary"
-                    viewBox="0 0 16 16">
-                      <path d="M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z"/>
-                    </svg>-->
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-bag-plus-fill" viewBox="0 0 16 16">
                       <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5v-.5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0zM8.5 8a.5.5 0 0 0-1 0v1.5H6a.5.5 0 0 0 0 1h1.5V12a.5.5 0 0 0 1 0v-1.5H10a.5.5 0 0 0 0-1H8.5V8z"/>
                     </svg>
@@ -92,14 +86,14 @@
 							</div>
             </div>
 						<div class="card-body text-center">
-							<img [src]="p.Image" class="img-fluid mb-3" alt=""/>
-							<h6 class="product-title">{{p.Name}}</h6>
-							<p class="product-price text-muted fs-5 mb-1"><span>{{p.Price}} FCFA</span>
+							<img [src]="p.image" class="img-fluid mb-3" alt=""/>
+							<h6 class="product-title">{{p.name}}</h6>
+							<p class="product-price text-muted fs-5 mb-1"><span>{{p.price}} FCFA</span>
 							</p>
 
 							<div class="actions d-flex align-items-center justify-content-center gap-2 mt-3">
                 <a
-                    (click)="getProductDetails(p.Id)" (click)="open(content)"
+                    (click)="getProductDetails(p.id)" (click)="open(content)"
                     href="javascript:;" class="btn btn-sm btn-outline-primary">
                     <i class="bi bi-eye-fill"></i>
                 </a>
@@ -113,6 +107,7 @@
 			</div>
 			<!--end row-->
 		</div>
+    <!--
 		<nav class="float-end mt-4" aria-label="Page navigation">
 			<ul class="pagination">
 				<li class="page-item">
@@ -120,12 +115,13 @@
 				</li>
 				<li [ngClass]="(page.current)?'page-item active':'page-item'"
             *ngFor="let page of pagesArray">
-          <a class="page-link" (click)="getProductsByPage(page.number, pageItemsCount)" >{{page.number}}</a>
+          <a class="page-link" (click)="getProductsByPage(page.number, pageItemsCount)" >page.number}}</a>
 				</li>
 				<li class="page-item"><a class="page-link" (click)="getProductsByPage(currentPage+1, pageItemsCount)">Suivant</a>
 				</li>
 			</ul>
 		</nav>
+    -->
 	</div>
 </div>
 
@@ -137,7 +133,7 @@
   <div class="modal-body">
     <form>
       <div class="mb-3 col-4">
-        <img [src]="currentProduct.Image" class="img-fluid mb-3" alt=""/>
+        <img [src]="currentProduct.image" class="img-fluid mb-3" alt=""/>
       </div>
       <div class="mb-3">
         <label for="dateOfBirth"></label>
@@ -148,13 +144,13 @@
       <div class="mb-3">
         <label for="dateOfBirth">Nom</label>
         <div class="input-group">
-        <input id="nom" type="text" class="form-control" name="nom" [(ngModel)]="currentProduct.Name">
+        <input id="nom" type="text" class="form-control" name="nom" [(ngModel)]="currentProduct.name">
         </div>
       </div>
       <div class="mb-3">
         <label for="dateOfBirth">Prix (FCFA)</label>
         <div class="input-group">
-        <input id="prix" type="text" class="form-control" name="prix" [(ngModel)]="currentProduct.Price">
+        <input id="prix" type="text" class="form-control" name="prix" [(ngModel)]="currentProduct.price">
         </div>
       </div>
       <div class="mb-3">
@@ -162,14 +158,14 @@
         <div class="input-group">
         <select name="newProductCategory"
                 class="form-select"
-                [(ngModel)]="currentProduct.Category.Id"
+                [(ngModel)]="currentProduct.category.id"
                 (change)="getProductDetailsCategory()">
           <!--  -->
 					<option
-            [selected]="c.Id==currentProduct.Category.Id?true:false"
+            [selected]="c.Id==currentProduct.category.id?true:false"
             *ngFor="let c of categories"
-            value="{{c.Id}}">
-            {{c.Name|titlecase}}
+            value="{{c.id}}">
+            {{c.name|titlecase}}
           </option>
 				</select>
         </div>
@@ -177,13 +173,13 @@
       <div class="mb-3">
         <label for="dateOfBirth">Stock</label>
         <div class="input-group">
-        <input id="stock" type="number" class="form-control" name="stock" [(ngModel)]="currentProduct.Stock">
+        <input id="stock" type="number" class="form-control" name="stock" [(ngModel)]="currentProduct.stockQuantity">
         </div>
       </div>
       <div class="mb-3">
         <label for="dateOfBirth">Description</label>
         <div class="input-group">
-        <textarea name="description" [(ngModel)]="currentProduct.Description" class="form-control" placeholder="Description du produit" rows="5" cols="4"></textarea>
+        <textarea name="description" [(ngModel)]="currentProduct.description" class="form-control" placeholder="Description du produit" rows="5" cols="4"></textarea>
         </div>
       </div>
     </form>

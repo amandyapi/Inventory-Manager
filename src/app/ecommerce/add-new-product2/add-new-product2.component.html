@@ -54,18 +54,22 @@
 							<div class="card-body">
 								<div class="row g-3">
 									<div class="col-12">
+										<label class="form-label">Code</label>
+										<input name="stock" [(ngModel)]="product.code" type="text" class="form-control" placeholder="Code">
+									</div>
+									<div class="col-12">
 										<label class="form-label">Prix</label>
 										<input name="price" [(ngModel)]="product.price" type="text" class="form-control" placeholder="Price">
 									</div>
 									<div class="col-12">
 										<label class="form-label">Catégorie</label>
 										<select name="category" [(ngModel)]="product.category" class="form-select">
-											<option *ngFor="let c of categorieList" value="{{c}}">{{c.name|titlecase}}</option>
+											<option *ngFor="let c of categorieList" value="{{c.id}}">{{c.name|titlecase}}</option>
 										</select>
 									</div>
 									<div class="col-12">
 										<label class="form-label">Stock</label>
-										<input name="stock" [(ngModel)]="product.stock" type="number" class="form-control" placeholder="Tags">
+										<input name="stock" [(ngModel)]="product.stockQuantity" type="number" class="form-control" placeholder="0">
 									</div>
 								</div>
 								<!--end row-->

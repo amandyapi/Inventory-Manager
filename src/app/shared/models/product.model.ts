@@ -8,4 +8,5 @@ export class ProductModel {
   code: string;
   description: string;
   price: number;
+  image:any;
 }

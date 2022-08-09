@@ -1,5 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ToastrService } from 'ngx-toastr';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { GeneralService } from 'src/app/shared/services/general.service';
+import { OperationService } from 'src/app/shared/services/operation.service';
+import { OrderService } from 'src/app/shared/services/order.service';
+import { SecurityService } from 'src/app/shared/services/security.service';
 import { StockService } from 'src/app/shared/services/stock.service';
+import { StorageService } from 'src/app/shared/services/storage.service';
 
 @Component({
   selector: 'app-add-new-product2',
@@ -19,22 +28,70 @@ export class AddNewProduct2Component implements OnInit {
   };
 
   constructor(
-    private stockService: StockService
+    private orderService: OrderService,
+    private stockService: StockService,
+    private modalService: NgbModal,
+    private router: Router,
+    private generalService: GeneralService,
+    private storageService: StorageService,
+    private securityService: SecurityService,
+    private toastr: ToastrService,
+    private ngxService: NgxUiLoaderService,
+    private operationService: OperationService
   ) { }
 
   ngOnInit(): void {
     this.loadCategories();
   }
 
-  loadCategories(){
-    this.categorieList = this.stockService.getCategories();
-    console.log('categorie List', this.categorieList);
+  async loadCategories() {
+    this.ngxService.start();
+    (await this.stockService.loadCategories())
+      .toPromise()
+      .then(async (res) => {
+        this.toastr.success('Succes', 'Opération réussie');
+        this.ngxService.stop();
+        this.categorieList = res;
+
+        console.log('this.categories ', this.categorieList);
+        this.storageService.setItem('categories', this.categorieList);
+      })
+      .catch((err) => {
+        this.ngxService.stop();
+        this.toastr.error('Oops', 'Opération impossible');
+      });
   }
 
-  addProduct(){
+  async addProduct(){
     console.clear();
-    console.log('Product ', this.product);
-    this.stockService.createProduct(this.product);
+    let imageData = this.product.image.replace('data:image/png;base64,', '');
+    console.log('Product', this.product);
+    let body:any = {
+      name: this.product.name,
+      code: this.product.code,
+      categoryId: this.product.category,
+      discountId: null,
+      description: this.product.description,
+      price: this.product.price,
+      image: imageData,
+      stockQuantity: this.product.stockQuantity
+    };
+
+    console.log('Product body', body);
+    //return false;
+    this.ngxService.start();
+    (await this.stockService.createProduct(body))
+      .toPromise()
+      .then(async (res) => {
+        this.toastr.success('Succes', 'Produit ajouté avec succès');
+        this.ngxService.stop();
+        //this.loadCategories();
+        console.log('Product added', res);
+      })
+      .catch((err) => {
+        this.ngxService.stop();
+        this.toastr.error('Oops', 'Opération impossible');
+      });
     this.resetProduct();
   }
 

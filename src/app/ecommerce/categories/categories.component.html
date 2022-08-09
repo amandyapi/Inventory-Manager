@@ -27,11 +27,15 @@
 						<form class="row g-3">
 							<div class="col-12">
 								<label class="form-label">Nom</label>
-								<input [(ngModel)]="category.Name" name="categoryName" type="text" class="form-control" placeholder="Nom de la catégorie">
+								<input [(ngModel)]="category.name" name="categoryName" type="text" class="form-control" placeholder="Nom de la catégorie">
+							</div>
+							<div class="col-12">
+								<label class="form-label">Code</label>
+								<input [(ngModel)]="category.code" name="categoryCode" type="text" class="form-control" placeholder="Code">
 							</div>
 							<div class="col-12">
 								<label class="form-label">Description</label>
-								<textarea [(ngModel)]="category.Description" name="categoryDescription" class="form-control" rows="10" cols="3" placeholder="Description de la catégorie"></textarea>
+								<textarea [(ngModel)]="category.description" name="categoryDescription" class="form-control" rows="10" cols="3" placeholder="Description de la catégorie"></textarea>
 							</div>
 							<div class="col-12">
 								<div class="row justify-content-around">
@@ -58,9 +62,9 @@
 								</thead>
 								<tbody>
 									<tr *ngFor="let c of categorieList">
-										<td>{{c.Id}}</td>
-										<td>{{c.Name}}</td>
-										<td>{{c.Description}}</td>
+										<td>{{c.id}}</td>
+										<td>{{c.name}}</td>
+										<td>{{c.description}}</td>
 										<td>
 											<div class="d-flex justify-content-center align-items-center gap-3 fs-6">
                         <a
