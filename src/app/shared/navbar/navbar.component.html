@@ -21,7 +21,7 @@
 			<a class="nav-link dropdown-toggle dropdown-toggle-nocaret" href="#" routerLinkActive="router-link-active"  data-bs-toggle="dropdown">
 			  <div class="user-setting d-flex align-items-center gap-1">
 				<img src="assets/images/avatars/avatar-1.png" class="user-img" alt="">
-				<div class="user-name d-none d-sm-block">Carl</div>
+				<div class="user-name d-none d-sm-block">{{user.Username}}</div>
 			  </div>
 			</a>
 			<ul class="dropdown-menu dropdown-menu-end" >
@@ -30,7 +30,7 @@
 				   <div class="d-flex align-items-center">
 					  <img src="assets/images/avatars/avatar-1.png" alt="" class="rounded-circle" width="60" height="60">
 					  <div class="ms-3">
-						<h6 class="mb-0 dropdown-user-name">Carl</h6>
+						<h6 class="mb-0 dropdown-user-name">{{user.Username}}</h6>
 						<small class="mb-0 dropdown-user-designation text-secondary">Administrateur</small>
 					  </div>
 				   </div>
@@ -65,7 +65,7 @@
 				</li>
 				<li><hr class="dropdown-divider"></li>
 				<li>
-				  <a class="dropdown-item" routerLink="/auth/sign-in">
+				  <a class="dropdown-item" (click)="logout()">
 					 <div class="d-flex align-items-center">
 					   <div class="setting-icon"><i class="bi bi-lock-fill"></i></div>
 					   <div class="setting-text ms-3"><span>Déconnexion</span></div>

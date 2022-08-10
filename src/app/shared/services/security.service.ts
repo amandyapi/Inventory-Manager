@@ -69,6 +69,25 @@ export class SecurityService {
       return response;
   }
 
+  async getNewToken() {
+    const credentials: any = {
+      usernameOrEmail: 'ayapi@sk-automate.com',
+      password: 'amandyapi'
+    };
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token.accessToken
+    });
+
+
+    const response = this.http.post<any>(environment.baseUrl + '/oauth/login', credentials,
+      { responseType: 'json', headers })
+      .toPromise();
+      //console.log('response', response);
+      return response;
+  }
+
   async userLogin(body) {
     //console.log('Auth ss', authForm);
     const credentials: any = {
@@ -90,22 +109,23 @@ export class SecurityService {
     this.token = this.getLocalToken();
     //console.log('custom Token', this.token);
     if (this.isLocalTokenExpired()) {
-      console.log('token Is Expired');
+      //console.log('token Is Expired');
       try {
-        this.token = await this.getToken(this.token.refreshToken);
+        this.token = await this.getNewToken();
+        //this.token = await this.getToken(this.token.refreshToken);
 
         this.isExpired = false;
         this.storageService.setItem('token', this.token);
-        console.log('token refreshed new', this.token);
+        //console.log('token refreshed new', this.token);
         return this.token;
       } catch (error) {
         //this.router.navigate(['/auth/signin'], {});//Customed
-        console.log('A Token error occured', error);
+        //console.log('A Token error occured', error);
         return false;
       }
     } else {
       this.token = this.getLocalToken();
-      console.log('token Is valid', this.token);
+      //console.log('token Is valid', this.token);
       return this.token;
     }
     //return this.token;
@@ -118,7 +138,7 @@ export class SecurityService {
     */
     this.currentDate = Date.now();
     let _timestamp: number =  new Date(this.token.accessTokenExpiresOn).getTime()
-    console.log('customToken 002', this.token.accessTokenExpiresOn, _timestamp);
+    //console.log('customToken 002', this.token.accessTokenExpiresOn, _timestamp);
     this.duration = Math.floor(this.currentDate / 1000) - Math.floor(_timestamp / 1000);
 
     if (!tokenRegexp.test(this.token.accessTokenExpiresOn)) {

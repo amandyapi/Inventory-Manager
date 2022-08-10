@@ -38,7 +38,7 @@
 							<option value="20">Voir 20</option>
 							<option value="30">Voir 30</option>
 						</select>
-					</div>-->
+					</div>
 					<div class="col-lg-2 col-6 col-md-3">
             <label class="form-label text-center text-muted">Statut</label>
 						<select [(ngModel)]="filter._Status" (change)="customFilter(1, 10)" name="status" class="form-select">
@@ -47,7 +47,7 @@
 							<option value="1">Annulées</option>
 							<option value="2">En attente</option>
 						</select>
-					</div>
+					</div>-->
 				</div>
 			</div>
 			<div class="card-body">
@@ -63,21 +63,42 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr *ngFor="let o of orders.data">
-								<td>{{o.Id}}</td>
-								<td>{{o.Amount}} {{o.Currency}}</td>
+              <tr>
+                <td>{{currentOrder.id}}</td>
+                <td>{{currentOrder.amount}} FCFA</td>
+                <td>
+                  <span class="badge rounded-pill alert-info">En attente</span>
+                </td>
+                <td>{{currentOrder.effectiveDate}}</td>
+                <td>
+                  <div class="d-flex align-items-center gap-3 fs-6">
+                    <a
+                      href="javascript:;" class="text-primary" data-bs-toggle="tooltip"
+                      data-bs-placement="bottom" title="" data-bs-original-title="View detail"
+                      aria-label="Views" (click)="navigateToOrderDetails(currentOrder)">
+                       <i class="bi bi-eye-fill"></i>
+                    </a>
+									</div>
+                </td>
+              </tr>
+							<tr *ngFor="let order of orders">
+								<td>{{order.id}}</td>
+								<td>{{order.amount}} FCFA</td>
 								<td>
-                    <span *ngIf="o.Status == 0" class="badge rounded-pill alert-success">Terminée</span>
-                    <span *ngIf="o.Status == 1" class="badge rounded-pill alert-danger">Annulée</span>
-                    <span *ngIf="o.Status == 2" class="badge rounded-pill alert-info">En attente</span>
+                    <span class="badge rounded-pill alert-success">Terminée</span>
+                    <!--
+                      <span *ngIf="o.Status == 0" class="badge rounded-pill alert-success">Terminée</span>
+                      <span *ngIf="o.Status == 1" class="badge rounded-pill alert-danger">Annulée</span>
+                      <span *ngIf="o.Status == 2" class="badge rounded-pill alert-info">En attente</span>
+                    -->
 								</td>
-								<td>{{o.Date}}</td>
+								<td>{{order.effectiveDate}}</td>
 								<td>
 									<div class="d-flex align-items-center gap-3 fs-6">
                     <a
                       href="javascript:;" class="text-primary" data-bs-toggle="tooltip"
                       data-bs-placement="bottom" title="" data-bs-original-title="View detail"
-                      aria-label="Views" (click)="navigateToOrderDetails(o)">
+                      aria-label="Views" (click)="navigateToOrderDetails(order)">
                        <i class="bi bi-eye-fill"></i>
                     </a>
 									</div>
@@ -88,20 +109,21 @@
 				</div>
 			</div>
       <div class="card-footer">
-        <nav class="float-end" aria-label="Page navigation">
-					<ul class="pagination">
-            <li class="page-item">
-              <a class="page-link" (click)="customFilter(currentPage-1, pageItemsCount)">Précédent</a>
-            </li>
-            <li [ngClass]="(page.current)?'page-item active':'page-item'"
-                *ngFor="let page of pagesArray">
-              <a class="page-link" (click)="customFilter(page.number, pageItemsCount)">{{page.number}}</a>
-            </li>
-            <li class="page-item">
-              <a class="page-link" (click)="customFilter(currentPage+1, pageItemsCount)">Suivant</a>
-            </li>
-          </ul>
-				</nav>
+        <!--
+          <nav class="float-end" aria-label="Page navigation">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link">Précédent</a>
+              </li>
+              <li>
+                <a class="page-link">1</a>
+              </li>
+              <li class="page-item">
+                <a class="page-link">Suivant</a>
+              </li>
+            </ul>
+          </nav>
+        -->
       </div>
 		</div>
 	</div>
@@ -114,11 +136,11 @@
 				<form class="row g-3">
 					<div class="col-12">
 						<label class="form-label">Identifiant</label>
-						<input type="text" [(ngModel)]="filter.Id" name="idFilter" class="form-control" placeholder="Order ID">
+						<input type="text" name="idFilter" class="form-control" placeholder="Order ID">
 					</div>
 					<div class="col-12">
 						<label class="form-label">Statut</label>
-						<select class="form-select"  [(ngModel)]="filter.Status"  name="statusFilter">
+						<select class="form-select" name="statusFilter">
 							<option value="0">Terminées</option>
 							<option value="1">Annulées</option>
 							<option value="2">En attente</option>
@@ -126,15 +148,15 @@
 					</div>
 					<div class="col-12">
 						<label class="form-label">Montant</label>
-						<input type="text" [(ngModel)]="filter.Amount" class="form-control" name="amountFilter">
+						<input type="text" class="form-control" name="amountFilter">
 					</div>
 					<div class="col-12">
 						<label class="form-label">Date</label>
-						<input type="date" [(ngModel)]="filter.CreatedDate" class="form-control" name="dateFilter">
+						<input type="date" class="form-control" name="dateFilter">
 					</div>
 					<div class="col-12">
 						<div class="d-flex justify-content-arround">
-							<button (click)="customFilter(1, 10)" class="btn btn-primary col-6">Filter</button>
+							<button class="btn btn-primary col-6">Filter</button>
               <button (click)="resetFilter()" class="btn btn-outline-danger col-6">Annuler</button>
 						</div>
 					</div>

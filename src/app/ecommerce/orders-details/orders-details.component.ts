@@ -18,8 +18,6 @@ export class OrdersDetailsComponent implements OnInit {
   closeResult = '';
   orderDate: any;
 
-  testUrl= 'assets/common/img/operateurs/mtn-ci.png';
-
   operatorUrl = 'assets/common/img/operateurs/';
 
   orange = '';
@@ -35,11 +33,12 @@ export class OrdersDetailsComponent implements OnInit {
   moovwhite = 'moovmoney-white.png';
 
   operator: any = '';
-  service = '';
 
   public transaction: any = {
-    Amount: null,
-    PhoneNumber: '',
+    phoneNumber: '',
+    order: {
+      orderLines: [],
+    },
   };
 
   isTransactionEnable = false;
@@ -52,8 +51,6 @@ export class OrdersDetailsComponent implements OnInit {
   isExpired: boolean;
   isAmountValid = true;
   isPhoneNumberValid = true;
-  isOperatorValid = true;
-  isFormValid: boolean;
 
   counter = 120; //Set to 120
   initTransactionTimeOut = false;
@@ -107,6 +104,8 @@ export class OrdersDetailsComponent implements OnInit {
 
   isOperationFinished: boolean;
 
+  isCurrentOrder: boolean = false;
+
   constructor(
     private orderService: OrderService,
     private generalService: GeneralService,
@@ -126,26 +125,28 @@ export class OrdersDetailsComponent implements OnInit {
     this.moov = this.operatorUrl + this.moovRegular;
     this.isOperationFinished = false;
     this.initOrderObject();
-    this.initTransactionAmount();
+
+    this.isCurrentOrder = this.generalService.checkIdAsDateFormat(
+      this.order.id
+    );
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
 
-  }
-
-  initTransactionAmount(){
-    this.transaction.Amount = this.order.Amount;
-    console.log('transaction.Amount ', this.transaction.Amount);
-  }
-
-  openBrowser() {
-    console.log('browser !!!')
+  openBrowser(url) {
+    console.log('browser !!!');
+    window.open(url, '_blank');
+    console.log('browser opened !!!');
   }
 
   findOperator() {
-    if(this.transaction.PhoneNumber !== '' && this.transaction.PhoneNumber !== null && this.transaction.PhoneNumber.length === 10){
-      let phone = this.transaction.PhoneNumber as string;
-      let prefix = phone.substr(0,2);
+    if (
+      this.transaction.phoneNumber !== '' &&
+      this.transaction.phoneNumber !== null &&
+      this.transaction.phoneNumber.length === 10
+    ) {
+      let phone = this.transaction.phoneNumber as string;
+      let prefix = phone.substr(0, 2);
       let choice = '';
       //console.log('this.transaction.PhoneNumber', prefix);
       switch (prefix) {
@@ -184,38 +185,8 @@ export class OrdersDetailsComponent implements OnInit {
     }
   }
 
-  checkAmount() {
-    let amountRegexp = new RegExp('[0-9]{1,}');
-    if (!amountRegexp.test(this.transaction.Amount)) {
-      //console.log('Amount not valid !!!');
-    } else {
-      //console.log('Amount is valid !!!');
-    }
-  }
-
-  async login() {
-    this.ngxService.start();
-    (await this.securityService.customGetToken())
-      .toPromise()
-      .then(async (res) => {
-        //this.ngxService.stop();
-        this.customToken = res;
-        console.clear();
-        console.log('customToken ', this.customToken);
-        this.securityService.setLocalToken(this.customToken);
-        this.initTransaction();
-      })
-      .catch((err) => {
-        this.ngxService.stop();
-        console.warn('An error occured', err);
-        this.toastr.error('Oops', 'Connexion impossible!!!');
-      });
-  }
-
-  getToken() {}
-
   async initTransaction() {
-    //this.ngxService.start();
+    this.ngxService.start();
     console.log('this.transaction', this.transaction, this.order);
     //return false;
     switch (this.operator) {
@@ -235,12 +206,7 @@ export class OrdersDetailsComponent implements OnInit {
 
   async initMtnTransaction() {
     //this.ngxService.start();
-    let mtnTransaction = {
-      amount: this.transaction.Amount,
-      phoneNumber: this.transaction.PhoneNumber,
-    };
-
-    (await this.operationService.mtnRequestToPay(mtnTransaction))
+    (await this.operationService.mtnRequestToPay(this.transaction))
       .toPromise()
       .then(async (res) => {
         console.log('INIT MTN TRANSACTION ', res);
@@ -258,19 +224,14 @@ export class OrdersDetailsComponent implements OnInit {
 
   async initOrangeTransaction() {
     this.ngxService.start();
-    let mtnTransaction = {
-      amount: this.transaction.Amount,
-      phoneNumber: this.transaction.PhoneNumber,
-    };
-
-    (await this.operationService.orangeWebPayment(mtnTransaction))
+    (await this.operationService.orangeWebPayment(this.transaction))
       .toPromise()
       .then(async (res) => {
         this.ngxService.stop();
         this.orangeOperation = res;
         this.redirectUrl = this.orangeOperation.paymentUrl;
-        this.openBrowser();
-        console.clear();
+        this.openBrowser(this.redirectUrl);
+        //console.clear();
         console.log('init orange transaction', this.orangeOperation);
         this.isRefreshEnable = true;
         this.cronTask();
@@ -283,21 +244,10 @@ export class OrdersDetailsComponent implements OnInit {
       });
   }
 
-  orangeRedirectToPaymentPage() {
-    console.log('orange Operation', this.orangeOperation);
-    //window.open(yourLink, '_self')
-  }
-
   closeBrowser() {
     this.redirectUrl = '';
     this.browser.close();
   }
-
-  chooseService(operator) {
-    this.operator = operator;
-  }
-
-  checkStatus() {}
 
   open(content) {
     this.modalService
@@ -313,8 +263,8 @@ export class OrdersDetailsComponent implements OnInit {
   }
 
   clearOperationVars() {
-    this.transaction.Amount = null;
-    this.transaction.PhoneNumber = '';
+    this.transaction.amount = null;
+    this.transaction.phoneNumber = '';
 
     this.counter = 120;
 
@@ -367,28 +317,165 @@ export class OrdersDetailsComponent implements OnInit {
     }
   }
 
-  redirectToReceiptPage() {
-    //this.router.navigate(['/receipt']);
-  }
-
   initOrderObject() {
     this.order = this.storageService.getItem('orderDetails');
-    this.order.OrderLines.forEach((element) => {
-      element.Amount = this.generalService.convertAmountToStringFormat(
-        this.generalService.convertStringToAmount(element.Product.Price) *
-          element.Quantity
-      );
-    });
-    this.order.Amount = this.orderService.getOrderTotalAmount(this.order);
     console.log('Order initiated', this.order);
+    this.order.orderLines.forEach((elt) => {
+      this.transaction.order.orderLines.push({
+        productId: elt.product.id,
+        quantity: elt.quantity,
+      });
+    });
+    console.log('Transaction initiated', this.transaction);
+    //this.order.product.image = 'data:image/png;base64,'+this.order.product.image;
+    //console.log('Order initiated', this.order);
     this.formatOrderDate();
   }
 
   formatOrderDate() {
-    this.orderDate = this.generalService.getformatedDate(this.order.Date);
+    this.orderDate = this.generalService.getformatedDate(
+      this.order.effectiveDate
+    );
   }
 
   printReceipt() {
     console.log('print receipt');
+  }
+
+  setOperatorState(){
+    let state = {
+      Operator: '',
+      Id: '',
+    };
+
+    if (this.operator === 'ORANGE') {
+      state.Operator = 'orange';
+      state.Id = this.orangeOperation.orderId;
+    } else if (this.operator === 'MTN') {
+      state.Operator = 'mtn';
+      state.Id = this.mtnOperation.externalId;
+    }
+    return state;
+  }
+
+  async checkStatus() {
+    this.ngxService.start();
+    console.log('Check Transaction Status');
+    let state = this.setOperatorState();
+    
+    (await this.operationService.getState(state.Operator, state.Id))
+      .toPromise()
+      .then(async (res) => {
+        this.ngxService.stop();
+        console.clear();
+        console.log('TRANSACTION STATUS ', res);
+        switch (this.operator) {
+          case 'ORANGE':
+            this.checkOrangeStatus(res);
+            break;
+          case 'MTN':
+            this.checkMtnStatus(res);
+            break;
+          default:
+            console.log('Default check status');
+            break;
+        }
+      })
+      .catch((err) => {
+        this.ngxService.stop();
+        console.warn('An error occured', err);
+        this.toastr.error('Echec de la transaction', 'Transaction impossible');
+      });
+  }
+
+  checkOrangeStatus(res) {
+    this.orangeOperation = res;
+    let data;
+    switch (this.orangeOperation.status) {
+      case 0: //INITIATED
+        if (!this.pendingToast) {
+          this.toastr.info('Info', 'Transaction initialisée');
+          this.pendingToast = true;
+        }
+        this.cronTask();
+        break;
+      case 1: //PENDING
+        if (!this.pendingToast) {
+          this.toastr.info('Info', 'Transaction en attente');
+        }
+        this.cronTask();
+        break;
+      case 2: //EXPIRED
+        data = {
+          key: 'expired',
+          message: 'session timeout',
+        };
+        this.operationService.setExternalOperation(data);
+        this.closeBrowser();
+        this.toastr.warning(
+          'Echec de la transaction',
+          'Expiration du délais...'
+        );
+        this.clearOperationVars();
+        this.closeCronTask();
+        break;
+      case 3: //SUCCESS
+        data = {
+          key: 'success',
+          message: 'Operation success',
+        };
+        this.operationService.setExternalOperation(data);
+        this.closeBrowser();
+        this.toastr.success('Success', 'Opération réussie...');
+        this.clearOperationVars();
+        this.closeCronTask();
+        break;
+      case 4: //FAILED
+        data = {
+          key: 'failed',
+          message: 'Operation failed',
+        };
+        this.operationService.setExternalOperation(data);
+        this.closeBrowser();
+        this.toastr.warning(
+          'Echec de la transaction',
+          'Une erreur est survenue...'
+        );
+        this.clearOperationVars();
+        this.closeCronTask();
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  checkMtnStatus(res) {
+    this.mtnOperation = res;
+    switch (this.mtnOperation.status) {
+      case 0:
+        if (!this.pendingToast) {
+          this.toastr.info('Info', 'Transaction en attente');
+          this.pendingToast = true;
+        }
+        this.cronTask();
+        break;
+      case 1:
+        this.toastr.success('Success', 'Opération réussie...');
+        this.clearOperationVars();
+        this.closeCronTask();
+        break;
+      case 2:
+        this.toastr.error(
+          this.reasons[this.mtnOperation.reason],
+          'Une erreur est survenue...'
+        );
+        this.clearOperationVars();
+        this.closeCronTask();
+        break;
+
+      default:
+        break;
+    }
   }
 }

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { StorageService } from './../../shared/services/storage.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { GeneralService } from 'src/app/shared/services/general.service';
 
 @Component({
   selector: 'app-orders',
@@ -12,7 +13,8 @@ import { NgxUiLoaderService } from 'ngx-ui-loader';
 })
 export class OrdersComponent implements OnInit {
 
-  orders:any;
+  orders:any[];
+
   currentPage: number;
   previousPage: number;
   nextPage: number;
@@ -29,98 +31,69 @@ export class OrdersComponent implements OnInit {
     CreatedDate: null
   };
 
+  currentOrder: any;
+
   constructor(
     private orderService: OrderService,
     private storageService: StorageService,
+    private generalService: GeneralService,
     private router: Router,
     private toastr: ToastrService,
     private ngxService: NgxUiLoaderService,
   ) {
-    //this.ngxService.start();
-    //this.toastr.success('Hello world!', 'Toastr fun!');
+    this.loadOrders();
+    this.getCurrentOrder();
    }
 
   ngOnInit(): void {
     this.currentPage = 1;
     this.pageItemsCount = 10;
     this._status = -1;
-    this.getOrders(this.currentPage, this.pageItemsCount);
-    this.loadPageArray();
-    this.setCurrentPage(this.currentPage);
+    //this.getOrders(this.currentPage, this.pageItemsCount);
+    //this.loadPageArray();
+    //this.setCurrentPage(this.currentPage);
+  }
+  getCurrentOrder(){
+    this.currentOrder = this.orderService.getCurrentOrder();
+    //console.clear();
+
+    console.log('Current order', this.currentOrder);
   }
 
-  sortOrders(){
-    this.orders.data.sort((a, b) => (a.Date > b.Date) ? -1 : 1);
-  }
-
-  getOrders(p, i){
-    this.currentPage = p;
-    console.log('currentPage', p, 'pageItemsCount', i);
-    this.orders = this.orderService.getCartByStatus(p, i, this._status);
-    this.setCurrentPage(p);
-    this.sortOrders();
-    console.log('orders ', this.orders);
+  async loadOrders(){
+    (await this.orderService.getOrders())
+      .toPromise()
+      .then(async (res) => {
+        this.toastr.success('Succes', 'Opération réussie');
+        let result = res;
+        /*result.orders.forEach(elt => {
+          this.orders.push(elt);
+        });*/
+        this.orders = res.orders;
+        console.log('orders result', res.orders);
+        this.ngxService.stop();
+      })
+      .catch((err) => {
+        this.ngxService.stop();
+        this.toastr.error('Oops', 'Opération impossible');
+      });
   }
 
   setStatus(){
     console.log('status', this._status);
-    this.orders = this.orderService.getCartByStatus(1, 10, this._status);
+    this.orders = this.orderService.getCartByStatus(this.orders, 1, 10, this._status);
     console.log('this.orders', this.orders);
     this.currentPage = 1;
   }
 
-  getOrdersByStatus(p, i, status){
-    this.currentPage = p;
-    console.log('currentPage', p, 'pageItemsCount', i);
-    this.orders = this.orderService.getCartByStatus(p, i, status);
-    console.log('orders ', this.orders);
-    this.setCurrentPage(p);
-  }
-
   navigateToOrderDetails(order){
     this.storageService.setItem('orderDetails', order);
+    console.log('order ', order);
     this.redirectTo('/ecommerce/orders-details');
-  }
-
-  changePageItems(){
-    console.log('this.pageItemsCount', this.pageItemsCount);
-    this.currentPage = 1;
-    this.getOrdersByStatus(this.currentPage, this.pageItemsCount, this._status);
   }
 
   redirectTo(page){
     this.router.navigate([page]);
-  }
-
-  loadPageArray(){
-    this.pagesArray = [];
-    for (let i = 0; i < this.orders.totalPages; i++) {
-      this.pagesArray.push({
-        number: i+1,
-        current: false
-      });
-    }
-    //console.log('pagesArray', this.pagesArray);
-  }
-
-  filterBy(term){
-    switch (term) {
-      case 'id':
-
-        break;
-      case 'amount':
-
-        break;
-      case 'status':
-
-        break;
-      case 'date':
-
-        break;
-
-      default:
-        break;
-    }
   }
 
   setCurrentPage(currentPage){
@@ -150,29 +123,12 @@ export class OrdersComponent implements OnInit {
     let _searchedProductsByCategory;
     let status = this._status;
     if(status == 'all'){
-      this.getOrders(1, this.pageItemsCount);
+      //this.getOrders(1, this.pageItemsCount);
     }
     else
     {
-      let rawProducts = this.orderService.getCartByStatus(1, this.orders.totalItemsCount, status);
+      //let rawProducts = this.orderService.getCartByStatus(this.orders, 1, this.orders.totalItemsCount, status);
     }
-  }
-
-  filterById(){}
-
-  filterByAmount(){}
-
-  filterByDate(){}
-
-  customFilter(p, i){
-    this.currentPage = p;
-    let orders = this.orderService.getCartByFilterOptions(p, i, this.filter);
-    this.orders = orders;
-    console.clear();
-    console.log('filter', p, i,this.filter);
-    console.log('this.orders', this.orders);
-    this.loadPageArray();
-    this.setCurrentPage(p);
   }
 
   resetFilter(){
@@ -186,8 +142,7 @@ export class OrdersComponent implements OnInit {
     this.currentPage = 1;
     this.pageItemsCount = 10;
 
-    this.getOrders(this.currentPage, this.pageItemsCount);
-    this.loadPageArray();
+    //this.getOrders(this.currentPage, this.pageItemsCount);
     this.setCurrentPage(this.currentPage);
   }
 

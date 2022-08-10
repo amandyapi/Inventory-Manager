@@ -87,8 +87,8 @@ export class ProductsGridComponent implements OnInit {
 
   addToCurrentCart(product) {
     //alert('produit ajouté au panier');
-    let cart = this.orderService.addToCart(product);
-    //console.log('new cart', cart);
+    let cart = this.orderService.addToCurrentCart(product);
+    console.log('new cart', cart);
   }
 
   async loadCategories() {

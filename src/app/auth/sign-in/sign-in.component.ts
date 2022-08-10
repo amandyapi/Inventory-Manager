@@ -69,11 +69,13 @@ export class SignInComponent implements OnInit {
       (await this.securityService.userLogin(this.user))
         .toPromise()
         .then(async (res) => {
-          this.toastr.success('Succes', 'Connexion réussie');
+          //this.toastr.success('Succes', 'Connexion réussie');
           this.ngxService.stop();
           this.token = res;
           console.log('Token ', this.token);
+          this.storageService.setItem('user', this.user);
           this.storageService.setItem('token', this.token);
+          this.orderService.initCart();
           this.router.navigate(['ecommerce/products-grid']);
         })
         .catch((err) => {

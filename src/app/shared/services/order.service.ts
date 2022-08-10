@@ -2,6 +2,10 @@ import { GeneralService } from './general.service';
 import { Injectable } from '@angular/core';
 import { inArray } from 'highcharts';
 import { orders } from '../data/orders';
+import { StorageService } from './storage.service';
+import { SecurityService } from './security.service';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -15,63 +19,127 @@ export class OrderService {
     totalItemsCount: 0
   };
 
+  order: any = {
+    id: '',
+    phoneNumber: '',
+    effectiveDate: '',
+    user: '',
+    amount: 0,
+    orderLines: []
+  };
+
   currentOrder: any;
 
+  token:any = {
+    tokenType: '',
+    accessToken: '',
+    accessTokenExpiresOn: '',
+    refreshToken: ''
+  };
+
+
   constructor(
-    private generalService: GeneralService
+    private generalService: GeneralService,
+    private storageService: StorageService,
+    private securityService: SecurityService,
+    private http: HttpClient,
   ) {
-    this.cart.data = this.loadCart();
-    console.log('this.cart', this.cart);
+    //this.cart.data = this.loadCart();
   }
 
-  addToCart(product){
+  initCart(){
+    this.order = {
+      id: '',
+      phoneNumber: '',
+      effectiveDate: '',
+      user: '',
+      amount: 0,
+      orderLines: []
+    }
+    this.storageService.setItem('order', this.order);
+    console.log('order initiated', this.order)
+  }
+
+  addToCurrentCart(product){
     let found = false;
     let currentOrder = this.searchCurrentOrder();
-
-    if(currentOrder.OrderLines.length == 0){
-      currentOrder.OrderLines.push({
-        Product: product,
-        Quantity: 1
+    console.log('currentOrder ', currentOrder);
+    if(currentOrder.orderLines.length == 0){
+      currentOrder.orderLines.push({
+        product: product,
+        quantity: 1
       });
       console.log('current order lines == 0');
     }
-    else if(currentOrder.OrderLines.length > 0)
+    else if(currentOrder.orderLines.length > 0)
     {
       console.log('current order lines > 0');
-      currentOrder.OrderLines.forEach(elt => {
-        if(elt.Product.Id == product.Id){
+      currentOrder.orderLines.forEach(elt => {
+        if(elt.product.id == product.id){
           console.log('order lines > 0');
           found = true;
-          elt.Quantity += 1;
+          elt.quantity += 1;
         }
       });
       if(found == false){
-        currentOrder.OrderLines.push({
-          Product: product,
-          Quantity: 1
+        currentOrder.orderLines.push({
+          product: product,
+          quantity: 1
         });
       }
     }
-
-    this.cart.data.forEach(element => {
-      if(element.Id == currentOrder.Id){
-        element = currentOrder;
-      }
+    let amount: number = 0;
+    currentOrder.orderLines.forEach(elt => {
+      amount+= elt.quantity*elt.product.price
     });
-    return this.cart;
+    currentOrder.amount = amount;
+    if(currentOrder.id == ''){
+      currentOrder.id = this.generalService.generateId();
+    }
+    if(currentOrder.effectiveDate == ''){
+      currentOrder.effectiveDate = this.generalService.getFullDate();
+    }
+    this.setCart(currentOrder);
+    return this.order;
   }
 
   setCart(data){
-    this.cart = data;
+    this.order = data;
+    this.storageService.setItem('order', data);
   }
 
   getCurrentOrder(){
     return this.searchCurrentOrder();
   }
 
-  getCart(p, i) {
+  async getOrders(){
+    this.token = await this.securityService.customGetToken();
+    //console.log('stock this.token ', this.token);
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token.accessToken
+    });
+
+      return this.http.get<any>(environment.baseUrl + '/orders',
+      { responseType: 'json', headers });
+  }
+
+  async getOrderDetails(orderId){
+    this.token = await this.securityService.customGetToken();
+    //console.log('stock this.token ', this.token);
+    const headers = new HttpHeaders({
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: 'Bearer ' + this.token.accessToken
+    });
+
+      return this.http.get<any>(environment.baseUrl + '/orders/' + orderId,
+      { responseType: 'json', headers });
+  }
+
+  getCart(data, p, i) {
     let cart = [];
-    let data = this.loadCart();
     for (let index = (p-1)*i; index < p*i; index++) {
       if(data[index] !== undefined){
         cart.push(data[index]);
@@ -87,9 +155,9 @@ export class OrderService {
     }
     return this.cart;
   }
-  getCartByStatus(p, i, status){
+
+  getCartByStatus(data, p, i, status){
     let cart = [];
-    let data = this.loadCart();
     for (let index = (p-1)*i; index < p*i; index++) {
       if(data[index] !== undefined){
         if(status == -1){
@@ -112,9 +180,8 @@ export class OrderService {
     return this.cart;
   }
 
-  getCartByFilterOptions(p, i, filter){
+  getCartByFilterOptions(data, p, i, filter){
     let cart = [];
-    let data = this.loadCart();
     let searchId = [];
     let searchStatus = [];
     let _searchStatus = [];
@@ -209,22 +276,15 @@ export class OrderService {
   }
 
   searchCurrentOrder(){
-    let cart = this.loadCart();
-    console.clear();
-    let found = null;
-    found = cart.find(element => element.Status == 2);
-    console.log('found', found);
-    return found;
-  }
-  initCart(){
-
+    let cart = JSON.parse(localStorage.getItem('order'));
+    return cart;
   }
 
   getOrderTotalAmount(order){
     console.log('order ', order);
     let amount: number = 0;
-    order.OrderLines.forEach(elt => {
-      amount += this.generalService.convertStringToAmount(elt.Product.Price)*elt.Quantity;
+    order.order.orderLines.forEach(elt => {
+      amount += this.generalService.convertStringToAmount(elt.product.price)*elt.quantity;
     });
     return amount;
   }

@@ -22,7 +22,7 @@
 		<div class="row g-3 align-items-end">
 			<div class="col-12 col-lg-6 col-md-6 me-auto">
 				<h5 class="mb-1">{{orderDate}}</h5>
-				<p class="mb-0">{{order.Id}}</p>
+				<p class="mb-0">{{order.id}}</p>
 			</div>
 			<!--<div class="col-12 col-lg-3 col-6 col-md-3">
 				<select class="form-select">
@@ -34,7 +34,7 @@
 				</select>
 			</div>-->
 			<div class="col-12 col-lg-3 col-6 col-md-3">
-				<button *ngIf="order.Status == 2" type="button" (click)="open(content)" class="btn btn-primary me-2">Payer</button>
+				<button *ngIf="isCurrentOrder" type="button" (click)="open(content)" class="btn btn-primary me-2">Payer</button>
 				<button type="button" (click)="printReceipt()" class="btn btn-secondary"><i class="bi bi-printer-fill"></i> Imprimer</button>
 			</div>
 		</div>
@@ -56,22 +56,22 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr *ngFor="let o of order.OrderLines">
+									<tr *ngFor="let o of order.orderLines">
 										<td>
 											<div class="orderlist">
 												<a class="d-flex align-items-center gap-2" href="javascript:;">
 													<div class="product-box">
-														<img src="{{o.Product.Image}}" alt="">
+														<img src="{{o.product.image}}" alt="">
 													</div>
 													<div>
-														<P class="mb-0 product-title">{{o.Product.Name}}</P>
+														<P class="mb-0 product-title">{{o.product.name}}</P>
 													</div>
 												</a>
 											</div>
 										</td>
-										<td>{{o.Product.Price}} FCFA</td>
-										<td>{{o.Quantity}}</td>
-										<td>{{o.Amount}} FCFA</td>
+										<td>{{o.product.price}} FCFA</td>
+										<td>{{o.quantity}}</td>
+										<td>{{o.amount}} FCFA</td>
 									</tr>
 								</tbody>
 							</table>
@@ -97,7 +97,7 @@
 								<p class="mb-0">Total HT</p>
 							</div>
 							<div class="ms-auto">
-								<h5 class="mb-0">{{order.Amount}} FCFA</h5>
+								<h5 class="mb-0">{{order.amount}} FCFA</h5>
 							</div>
 						</div>
 
@@ -116,7 +116,7 @@
                 </p>
 							</div>
 							<div class="ms-auto">
-								<h5 class="mb-0 font-weight-bold text-danger">{{order.Amount}} FCFA</h5>
+								<h5 class="mb-0 font-weight-bold text-danger">{{order.amount}} FCFA</h5>
 							</div>
 						</div>
 					</div>
@@ -156,18 +156,18 @@
       <div class="mb-3 row">
         <label for="dateOfBirth" class="col-lg-5">Montant</label>
         <div class="input-group col-lg-6">
-        <input id="nom" [(ngModel)]="transaction.Amount" type="text" class="form-control" name="nom">
+        <input id="nom" value="{{order.amount + ' FCFA'}}" type="text" class="form-control" name="nom" readonly>
         </div>
       </div>
       <div class="mb-3 row">
         <label for="dateOfBirth">Numéro de téléphone</label>
         <div class="input-group">
-        <input id="phone" [(ngModel)]="transaction.PhoneNumber" (keyup)="findOperator()" type="text" class="form-control" name="phone">
+        <input id="phone" [(ngModel)]="transaction.phoneNumber" (keyup)="findOperator()" type="text" class="form-control" name="phone">
         </div>
       </div>
     </form>
   </div>
   <div class="modal-footer d-flex justify-content-center">
-    <button type="button" class="btn btn-outline-dark" (click)="login()">Valider le paiement</button>
+    <button type="button" class="btn btn-outline-dark" (click)="initTransaction()">Valider le paiement</button>
   </div>
   </ng-template>
